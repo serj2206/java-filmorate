@@ -1,34 +1,40 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.Builder;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Data
 @Builder(toBuilder = true)
 public class Film {
-/*
-целочисленный идентификатор — id;
-название — name;
-описание — description;
-дата релиза — releaseDate;
-продолжительность фильма — duration.
-*/
+    /*
+    целочисленный идентификатор — id;
+    название — name;
+    описание — description;
+    дата релиза — releaseDate;
+    продолжительность фильма — duration.
+    */
     private int id;
 
+    @Pattern(regexp = "^\\S*$")
     @NotBlank
-    @NotNull
     private String name;
+
     @NotNull
     private String description;
+
     @NotNull
     private LocalDate releaseDate;
+
     @NotNull
     private int duration;
-
+/*
     public int getId() {
         return id;
     }
@@ -98,4 +104,6 @@ public class Film {
                 ", duration=" + duration +
                 '}';
     }
+
+ */
 }

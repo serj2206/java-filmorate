@@ -1,8 +1,8 @@
 package ru.yandex.practicum.filmorate.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
@@ -14,9 +14,10 @@ import java.util.*;
 
 
 @RestController
+@Slf4j
 public class UserController {
 
-    private final static Logger log = LoggerFactory.getLogger(UserController.class);
+//    private final static Logger log = LoggerFactory.getLogger(UserController.class);
 
     private Map<Integer, User> listUser = new HashMap<>();
     int id = 0;
@@ -25,7 +26,7 @@ public class UserController {
     эндпоинт: создание пользователя;
     */
     @PostMapping("/users")
-    public User createUser(@Validated @RequestBody User user) {
+    public User create(@Validated @RequestBody User user) {
         log.debug("Получен POST-запрос на добавление нового пользователя.");
 
         if (user == null) {
@@ -45,15 +46,10 @@ public class UserController {
             throw new ValidationException("login отсутствует.");
         }
 
-
-
         if (user.getName() == null || user.getName().isBlank()) {
             log.debug("Имя пользователя не указано.");
             user.setName(user.getLogin());
         }
-
-
-
         setId();
         user.setId(id);
         listUser.put(id, user);
@@ -65,7 +61,7 @@ public class UserController {
     //эндпоинт: обновление пользователя;
     */
     @PutMapping("/users")
-    public User updateUser(@Valid @RequestBody User user) {
+    public User update(@Valid @RequestBody User user) {
         log.debug("Получен PUT-запрос на обновление данных пользователя.");
 //        try {
         if (user == null) {
@@ -108,7 +104,7 @@ public class UserController {
     //эндпоинт: получение списка всех пользователей.
     */
     @GetMapping("/users")
-    public Collection<User> getListUsers() {
+    public Collection<User> getList() {
         log.debug("Получен GET-запрос на получение списка пользователей.");
         return listUser.values();
     }

@@ -25,7 +25,7 @@ class FilmControllerTest {
                 ValidationException.class, new Executable() {
                     @Override
                     public void execute() {
-                        filmController.createFilm(film);
+                        filmController.create(film);
                     }
                 }
         );
@@ -37,7 +37,7 @@ class FilmControllerTest {
                 ValidationException.class, new Executable() {
                     @Override
                     public void execute() {
-                        filmController.updateFilm(film);
+                        filmController.update(film);
                     }
                 }
         );
@@ -74,8 +74,8 @@ class FilmControllerTest {
         Film filmReceived1 = film1.toBuilder().build();
         Film filmReceived2 = film2.toBuilder().build();
 
-        film1 = filmController.createFilm(film1);
-        film2 = filmController.createFilm(film2);
+        film1 = filmController.create(film1);
+        film2 = filmController.create(film2);
 
         filmReceived1.setId(film1.getId());
         filmReceived2.setId(film2.getId());
@@ -133,7 +133,7 @@ class FilmControllerTest {
         log.debug("Длина строки: {}", maxString.length());
         film1.setDescription(maxString);
 
-        Film filmReceived = filmController.createFilm(film1);
+        Film filmReceived = filmController.create(film1);
         assertEquals(filmReceived, film1);
         log.debug("Конец теста: createFilmDescriptionMaxTest\n");
     }
@@ -194,11 +194,11 @@ class FilmControllerTest {
     @Test
     public void updateFilmTest() {
         log.debug("Начало теста: updateFilmTest");
-        filmController.createFilm(film1);
+        filmController.create(film1);
         Film filmUpdate = film1.toBuilder().description("Хороший фильм").build();
         System.out.println(filmUpdate.getName() + " id=" + filmUpdate.getId());
 
-        Film filmReceived = filmController.updateFilm(filmUpdate);
+        Film filmReceived = filmController.update(filmUpdate);
         assertEquals(filmReceived, filmUpdate);
         assertNotEquals(filmReceived, film1);
         log.debug("Конец теста: updateFilmTest\n");
@@ -209,7 +209,7 @@ class FilmControllerTest {
     @Test
     public void updateFilmFieldsNullTest() {
         log.debug("Начало теста: updateFilmFieldsNullTest");
-        filmController.createFilm(film1);
+        filmController.create(film1);
 
         ValidationException exception1;
         exception1 = captureExceptionPUT(film3);
@@ -223,7 +223,7 @@ class FilmControllerTest {
     @Test
     public void updateFilmNullTest() {
         log.debug("Начало теста: updateFilmNullTest");
-        filmController.createFilm(film1);
+        filmController.create(film1);
 
         ValidationException exception1;
         exception1 = captureExceptionPUT(null);
@@ -237,7 +237,7 @@ class FilmControllerTest {
     @Test
     public void updateFilmIdFalseTest() {
         log.debug("Начало теста: updateFilmIdFalseTest");
-        filmController.createFilm(film1);
+        filmController.create(film1);
         Film updateFilm = film1.toBuilder().id(10).build();
 
         ValidationException exception1;
@@ -252,7 +252,7 @@ class FilmControllerTest {
     @Test
     public void updateFilmNameFalseTest() {
         log.debug("Начало теста: updateFilmNameFalseTest");
-        filmController.createFilm(film1);
+        filmController.create(film1);
 
         Film updateFilm = film1.toBuilder().name(null).build();
         ValidationException exception1;
@@ -272,13 +272,13 @@ class FilmControllerTest {
     @Test
     public void updateFilmDescriptionMaxTest() {
         log.debug("Начало теста: updateFilmDescriptionMaxTest");
-        filmController.createFilm(film1);
+        filmController.create(film1);
         String maxString = "012345679012345679012345679012345679012345679012345679012345679012345679012345679012345679" +
                 "012345679012345679012345679012345679012345679012345679012345679012345679012345679012345679012345679" +
                 "01234567901";
         log.debug("Длина строки: {}", maxString.length());
         Film updateFilm = film1.toBuilder().description(maxString).build();
-        Film filmReceived = filmController.updateFilm(updateFilm);
+        Film filmReceived = filmController.update(updateFilm);
         assertEquals(filmReceived, updateFilm);
         log.debug("Конец теста: updateFilmDescriptionMaxTest\n");
     }
@@ -287,7 +287,7 @@ class FilmControllerTest {
     @Test
     public void updateFilmDescriptionUpMaxTest() {
         log.debug("Начало теста: updateFilmDescriptionMaxTest");
-        filmController.createFilm(film1);
+        filmController.create(film1);
         String maxString = "012345679012345679012345679012345679012345679012345679012345679012345679012345679012345679" +
                 "012345679012345679012345679012345679012345679012345679012345679012345679012345679012345679012345679" +
                 "012345679010";
@@ -305,7 +305,7 @@ class FilmControllerTest {
     @Test
     public void updateFilmDurationTest() {
         log.debug("Начало теста: updateFilmDurationTest");
-        filmController.createFilm(film1);
+        filmController.create(film1);
 
         Film updateFilm = film1.toBuilder().duration(0).build();
 
@@ -327,7 +327,7 @@ class FilmControllerTest {
     public void updateFilmLocalDateTest() {
         log.debug("Начало теста: updateFilmLocalDateTest");
 
-        filmController.createFilm(film1);
+        filmController.create(film1);
 
         Film updateFilm = film1.toBuilder().releaseDate(LocalDate.of(1895, 12, 28).minusDays(1)).build();
 
@@ -343,14 +343,14 @@ class FilmControllerTest {
     @Test
     public void getFilmsTest() {
         log.debug("Начало теста: updateFilmLocalDateTest");
-        filmController.createFilm(film1);
-        filmController.createFilm(film2);
+        filmController.create(film1);
+        filmController.create(film2);
 
         ArrayList<Film> filmArrayList = new ArrayList<>();
         filmArrayList.add(film2);
         filmArrayList.add(film1);
 
-        assertTrue(filmArrayList.containsAll(filmController.getFilms()));
+        assertTrue(filmArrayList.containsAll(filmController.getList()));
 
         log.debug("Конец теста: updateFilmLocalDateTest\n");
     }

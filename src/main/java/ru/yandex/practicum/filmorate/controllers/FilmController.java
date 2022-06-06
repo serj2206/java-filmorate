@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
@@ -12,9 +13,10 @@ import java.time.LocalDate;
 import java.util.*;
 
 @RestController
+@Slf4j
 public class FilmController {
 
-    private final static Logger log = LoggerFactory.getLogger(FilmController.class);
+//    private final static Logger log = LoggerFactory.getLogger(FilmController.class);
     private Map<Integer, Film> collectionFilms = new HashMap<>();
     private int id;
 
@@ -22,7 +24,7 @@ public class FilmController {
 // эндпоинт: добавление фильма
 */
     @PostMapping("/films")
-    public Film createFilm(@Validated @RequestBody Film film) {
+    public Film create(@Validated @RequestBody Film film) {
         log.debug("Получен POST-запрос на добавление фильма.");
 
             if (film == null) {
@@ -54,7 +56,7 @@ public class FilmController {
 // эндпоинт: обновление фильма
 */
     @PutMapping("/films")
-    public Film updateFilm(@Validated @RequestBody Film film) {
+    public Film update(@Validated @RequestBody Film film) {
         log.debug("Получен PUT-запрос на обновление фильма.");
 
             if (film == null) {
@@ -89,7 +91,7 @@ public class FilmController {
 // эндпоинт: получение всех фильмов
 */
     @GetMapping("/films")
-    public Collection<Film> getFilms() {
+    public Collection<Film> getList() {
         log.debug("Получен GET-запрос на предоставление списка фильмов.");
         return collectionFilms.values();
     }

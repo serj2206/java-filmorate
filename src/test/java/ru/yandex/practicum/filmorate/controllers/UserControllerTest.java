@@ -6,13 +6,10 @@ import org.junit.jupiter.api.function.Executable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,7 +28,7 @@ class UserControllerTest {
                 ValidationException.class, new Executable() {
                     @Override
                     public void execute() {
-                        userController.createUser(user);
+                        userController.create(user);
                     }
                 }
         );
@@ -43,7 +40,7 @@ class UserControllerTest {
                 ValidationException.class, new Executable() {
                     @Override
                     public void execute() {
-                        userController.updateUser(user);
+                        userController.update(user);
                     }
                 }
         );
@@ -96,7 +93,7 @@ class UserControllerTest {
     @Test
     public void createUserAllFieldsTest() {
         log.debug("Запущен тест {}", "createUserAllFieldsTest()");
-        userReceived = userController.createUser(user2);
+        userReceived = userController.create(user2);
         assertEquals(user2, userReceived, "Фактический результат НЕ равен ожидаемому : user2");
         assertTrue(user2.getId() != 10, "ID не присвоен");
         log.debug("Тест {} завершен \n", "createUserAllFieldsTest()");
@@ -131,7 +128,7 @@ class UserControllerTest {
     public void createUserNameNullTest() {
         log.debug("Запущен тест {}", "createUserNameNullTest()");
         user2.setName(null);
-        userReceived = userController.createUser(user2);
+        userReceived = userController.create(user2);
         assertEquals(user2, userReceived, "Фактический результат НЕ равен ожидаемому : user2");
         log.debug("Тест {} завершен \n", "createUserEmailNull()");
     }
@@ -141,7 +138,7 @@ class UserControllerTest {
     public void createUserNameIsBlancTest() {
         log.debug("Запущен тест {}", "createUserNameIsBlancTest()");
         user2.setName("");
-        userReceived = userController.createUser(user2);
+        userReceived = userController.create(user2);
         assertEquals(user2, userReceived, "Фактический результат НЕ равен ожидаемому : user2");
         assertEquals(user2.getLogin(), user2.getName());
 
@@ -191,7 +188,7 @@ class UserControllerTest {
         log.debug("Запущен тест {}", "createUserBirthdayIsAfterNowTest()");
 
         user2.setBirthday(LocalDate.now());
-        User userTest = userController.createUser(user2);
+        User userTest = userController.create(user2);
         assertEquals(user2, userTest);
 
         log.debug("Тест {} завершен \n", "createUserBirthdayIsAfterNowTest()");
@@ -215,9 +212,9 @@ class UserControllerTest {
     @Test
     public void createUsersTest() {
         log.debug("Запущен тест {}", "createUsersTest()");
-        userReceived = userController.createUser(user2);
+        userReceived = userController.create(user2);
         assertEquals(user2, userReceived, "Фактический результат НЕ равен ожидаемому : user2");
-        userReceived = userController.createUser(user3);
+        userReceived = userController.create(user3);
         assertEquals(user3, userReceived, "Фактический результат НЕ равен ожидаемому : user3");
         assertEquals(2, user3.getId(), "Фактический результат НЕ равен ожидаемому : 2");
         log.debug("Тест {} завершен \n", "createUsersTest()");
@@ -228,7 +225,7 @@ class UserControllerTest {
     @Test
     public void updateUserNullTest(){
         log.debug("Запущен PUT тест {}", "updateUserNullTest");
-        userController.createUser(user2);
+        userController.create(user2);
 
         ValidationException exception1 = captureExceptionPUT(null);
         assertEquals("Тело запроса отсутствует!", exception1.getMessage());
@@ -252,9 +249,9 @@ class UserControllerTest {
     @Test
     public void updateUserAllFieldsTest() {
         log.debug("Запущен тест {}", "updateUserAllFieldsTest()");
-        userController.createUser(user2);
+        userController.create(user2);
         user2.setName("Zed");
-        userReceived = userController.updateUser(user2);
+        userReceived = userController.update(user2);
         assertEquals(user2, userReceived, "Фактический результат НЕ равен ожидаемому : user2");
         assertTrue(user2.getName()== "Zed", "Имя не соответствует ожидаемому");
         log.debug("Тест {} завершен \n", "updateUserAllFieldsTest()");
@@ -264,7 +261,7 @@ class UserControllerTest {
     @Test
     public void updateUserEmailNullTest() {
         log.debug("Запущен тест {}", "updateUserEmailNullTest()");
-        userController.createUser(user2);
+        userController.create(user2);
         user2.setEmail(null);
 
         ValidationException exception1 = captureExceptionPUT(user2);
@@ -277,7 +274,7 @@ class UserControllerTest {
     @Test
     public void updateUserEmailIsBlancTest() {
         log.debug("Запущен тест {}", "updateUserEmailIsBlancTest()");
-        userController.createUser(user2);
+        userController.create(user2);
 
         user2.setEmail("");
         ValidationException exception1 = captureExceptionPUT(user2);
@@ -289,9 +286,9 @@ class UserControllerTest {
     @Test
     public void updateUserNameNullTest() {
         log.debug("Запущен тест {}", "updateUserNameNullTest()");
-        userController.createUser(user2);
+        userController.create(user2);
         user2.setName(null);
-        userReceived = userController.updateUser(user2);
+        userReceived = userController.update(user2);
         assertEquals(user2, userReceived, "Фактический результат НЕ равен ожидаемому : user2");
         assertEquals(user2.getLogin(), user2.getName());
         log.debug("Тест {} завершен \n", "updateUserNameNullTest()");
@@ -300,9 +297,9 @@ class UserControllerTest {
     @Test
     public void updateUserNameIsBlancTest() {
         log.debug("Запущен тест {}", "updateUserNameIsBlancTest()");
-        userController.createUser(user2);
+        userController.create(user2);
         user2.setName("");
-        userReceived = userController.updateUser(user2);
+        userReceived = userController.update(user2);
         assertEquals(user2, userReceived, "Фактический результат НЕ равен ожидаемому : user2");
         assertEquals(user2.getLogin(), user2.getName());
         log.debug("Тест {} завершен \n", "updateUserNameIsBlancTest()");
@@ -314,7 +311,7 @@ class UserControllerTest {
     @Test
     public void updateUserLoginIsBlancTest() {
         log.debug("Запущен тест {}", "updateUserLoginIsBlancTest()");
-        userController.createUser(user2);
+        userController.create(user2);
 
         user2.setLogin("");
 
@@ -328,7 +325,7 @@ class UserControllerTest {
     @Test
     public void updateUserLoginNullTest() {
         log.debug("Запущен тест {}", "updateUserLoginNullTest()");
-        userController.createUser(user2);
+        userController.create(user2);
 
         user2.setLogin(null);
 
@@ -342,11 +339,11 @@ class UserControllerTest {
     @Test
     public void updateUserBirthdayNowTest() {
         log.debug("Запущен тест {}", "updateUserBirthdayNowTest()");
-        userController.createUser(user2);
+        userController.create(user2);
 
         user2.setBirthday(LocalDate.now());
 
-        User userTest = userController.updateUser(user2);
+        User userTest = userController.update(user2);
         assertEquals(user2, userTest);
 
         log.debug("Тест {} завершен \n", "updateUserBirthdayNowTest()");
@@ -357,7 +354,7 @@ class UserControllerTest {
     @Test
     public void updateUserBirthdayNullTest() {
         log.debug("Запущен тест {}", "updateUserBirthdayNullTest()");
-        userController.createUser(user2);
+        userController.create(user2);
 
         user2.setBirthday(null);
 
@@ -371,7 +368,7 @@ class UserControllerTest {
     @Test
     public void updateUserBirthdayIsAfterNowTest() {
         log.debug("Запущен тест {}", "createUserBirthdayIsAfterNowTest()");
-        userController.createUser(user2);
+        userController.create(user2);
         user2.setBirthday(LocalDate.now().plusDays(1));
 
         ValidationException exception1 = captureExceptionPUT(user2);
@@ -384,7 +381,7 @@ class UserControllerTest {
     @Test
     public void updateUserIdNotTest() {
         log.debug("Запущен тест {}", "updateUserIdNotTest()");
-        userController.createUser(user2);
+        userController.create(user2);
 
         user2.setId(0);
 
@@ -398,7 +395,7 @@ class UserControllerTest {
     @Test
     public void updateUserIdFalseTest() {
         log.debug("Запущен тест {}", "updateUserIdFalseTest()");
-        userController.createUser(user2);
+        userController.create(user2);
         user2.setId(10);
 
         ValidationException exception1 = captureExceptionPUT(user2);
@@ -414,12 +411,12 @@ class UserControllerTest {
     @Test
     public void getListUsersTest() {
         log.debug("Запущен тест {}", "getListUsersTest()");
-        userController.createUser(user2);
-        userController.createUser(user3);
+        userController.create(user2);
+        userController.create(user3);
         ArrayList<User> listUserTest = new ArrayList<>();
         listUserTest.add(user2);
         listUserTest.add(user3);
-        assertTrue(listUserTest.containsAll(userController.getListUsers()));
+        assertTrue(listUserTest.containsAll(userController.getList()));
         log.debug("Тест {} завершен \n", "getListUsersTest()");
     }
 }
