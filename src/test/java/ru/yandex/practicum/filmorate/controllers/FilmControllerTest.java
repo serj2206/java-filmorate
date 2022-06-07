@@ -151,7 +151,7 @@ class FilmControllerTest {
         ValidationException exception;
         exception= captureExceptionPOST(film1);
 
-        assertEquals("Количество символов в описании превышает 200символов!", exception.getMessage());
+        assertEquals("Количество символов в описании превышает 200 символов!", exception.getMessage());
         log.debug("Конец теста: createFilmDescriptionUpMaxTest\n");
     }
 
@@ -214,7 +214,7 @@ class FilmControllerTest {
         ValidationException exception1;
         exception1 = captureExceptionPUT(film3);
 
-        assertEquals("ID фильма не найдено!", exception1.getMessage());
+        assertEquals("Отсутствует название фильма!", exception1.getMessage());
 
         log.debug("Конец теста: updateFilmFieldsNullTest\n");
     }

@@ -17,8 +17,6 @@ import java.util.*;
 @Slf4j
 public class UserController {
 
-//    private final static Logger log = LoggerFactory.getLogger(UserController.class);
-
     private Map<Integer, User> listUser = new HashMap<>();
     int id = 0;
 
@@ -28,28 +26,9 @@ public class UserController {
     @PostMapping("/users")
     public User create(@Validated @RequestBody User user) {
         log.debug("Получен POST-запрос на добавление нового пользователя.");
+        ValidationControl validationControl = new ValidationControl();
+        validationControl.createValidationUser(user);
 
-        if (user == null) {
-
-            throw new ValidationException("Тело запроса отсутствует.");
-        }
-
-        if (user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")) {
-            throw new ValidationException("email отсутствует.");
-        }
-
-        if (user.getBirthday() == null || user.getBirthday().isAfter(LocalDate.now())) {
-            throw new ValidationException("Дата Дня Рождения указана не верно!");
-        }
-
-        if (user.getLogin() == null || user.getLogin().isBlank()) {
-            throw new ValidationException("login отсутствует.");
-        }
-
-        if (user.getName() == null || user.getName().isBlank()) {
-            log.debug("Имя пользователя не указано.");
-            user.setName(user.getLogin());
-        }
         setId();
         user.setId(id);
         listUser.put(id, user);
@@ -63,38 +42,8 @@ public class UserController {
     @PutMapping("/users")
     public User update(@Valid @RequestBody User user) {
         log.debug("Получен PUT-запрос на обновление данных пользователя.");
-//        try {
-        if (user == null) {
-            throw new ValidationException("Тело запроса отсутствует!");
-        }
-        if (!listUser.containsKey(user.getId())) {
-            throw new ValidationException("ID пользователя не найдено!");
-        }
-
-
-        if (user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")) {
-            throw new ValidationException("email отсутствует!");
-        }
-
-
-        if (user.getBirthday() == null || user.getBirthday().isAfter(LocalDate.now())) {
-            throw new ValidationException("Дата Дня Рождения указана не верно!");
-        }
-
-        log.debug("ID пользователя {}.", user.getId());
-        User userTemp = listUser.get(user.getId());
-
-
-        if (user.getLogin() == null || user.getLogin().isBlank()) {
-            throw new ValidationException("login отсутствует.");
-        }
-
-
-        if (user.getName() == null || user.getName().isBlank()) {
-            log.debug("Имя пользователя не указано.");
-            user.setName(user.getLogin());
-        }
-
+        ValidationControl validationControl = new ValidationControl();
+        validationControl.updateValidationUser(user, listUser);
         listUser.put(user.getId(), user);
         log.debug("Данные пользователя с ID = {} успешно обновлены.", user.getId());
         return user;

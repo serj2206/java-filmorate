@@ -73,7 +73,7 @@ class UserControllerTest {
         log.debug("Запущен тест {}", "createUserNullTest");
 
         ValidationException exception1 = captureExceptionPOST(null);
-        assertEquals("Тело запроса отсутствует.", exception1.getMessage());
+        assertEquals("Тело запроса отсутствует!", exception1.getMessage());
 
         log.debug("Тест {} завершен \n", "createUserNullTest");
     }
@@ -84,7 +84,7 @@ class UserControllerTest {
         log.debug("Запущен тест {}", "createUserAllFieldsNullTest");
 
         ValidationException exception1 = captureExceptionPOST(user1);
-        assertEquals("email отсутствует.", exception1.getMessage());
+        assertEquals("email отсутствует!", exception1.getMessage());
 
         log.debug("Тест {} завершен \n", "createUserAllFieldsNullTest");
     }
@@ -106,7 +106,7 @@ class UserControllerTest {
 
         user2.setEmail(null);
         ValidationException exception1 = captureExceptionPOST(user2);
-        assertEquals("email отсутствует.", exception1.getMessage());
+        assertEquals("email отсутствует!", exception1.getMessage());
 
         log.debug("Тест {} завершен \n", "createUserEmailNull()");
     }
@@ -118,7 +118,7 @@ class UserControllerTest {
         user2.setEmail("");
 
         ValidationException exception1 = captureExceptionPOST(user2);
-        assertEquals("email отсутствует.", exception1.getMessage());
+        assertEquals("email отсутствует!", exception1.getMessage());
 
         log.debug("Тест {} завершен \n", "createUserEmailIsBlancTest()");
     }
@@ -239,7 +239,7 @@ class UserControllerTest {
         log.debug("Запущен PUT тест {}", "updateUserAllFieldsNullTest");
 
         ValidationException exception1 = captureExceptionPUT(user1);
-        assertEquals("ID пользователя не найдено!", exception1.getMessage());
+        assertEquals("email отсутствует!", exception1.getMessage());
 
         log.debug("Тест {} завершен \n", "updateUserAllFieldsNullTest");
     }
