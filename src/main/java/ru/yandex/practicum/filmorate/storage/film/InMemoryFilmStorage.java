@@ -24,6 +24,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         this.validationControl = validationControl;
     }
 
+    //Добавить фильм в библиотеку
     @Override
     public Film add(Film film) {
 
@@ -38,6 +39,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         return film;
     }
 
+    //Удалить фильм из библиотеки
     public Film delete(Integer id) {
 
         Film film;
@@ -53,6 +55,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         return film;
     }
 
+    //Обновить фильм в библиотеке
     public Film update(Film film) {
 
         validationControl.updateValidationFilm(film, collectionFilms);
@@ -63,10 +66,21 @@ public class InMemoryFilmStorage implements FilmStorage {
         return film;
     }
 
+    //Предоставление списка фильмов
     @Override
     public Collection<Film> getFilms() {
         return collectionFilms.values();
     }
+
+    //Предоставление фильма
+    @Override
+    public Film getFilm(Integer id) {
+        if (collectionFilms.containsKey(id)) {
+            return collectionFilms.get(id);
+        }
+        return null;
+    }
+
 
     //Итерация ID
     private void setId() {

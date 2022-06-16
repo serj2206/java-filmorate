@@ -46,7 +46,7 @@ public class InMemoryUserStorage implements UserStorage {
             log.debug("Пользователь с id {} не найден", id); //тут видимо нужно прерывание
         }
         return user;
-    }  
+    }
 
     @Override
     public User update(@Validated User user){
@@ -59,6 +59,14 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public Collection<User> getList() {
         return listUser.values();
+    }
+
+    @Override
+    public User getUser(Integer id){
+        if (listUser.containsKey(id)) {
+            return listUser.get(id);
+        }
+        return null;
     }
 
     //Итерация ID

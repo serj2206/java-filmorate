@@ -13,5 +13,7 @@ public interface FilmStorage {
 
     public Collection<Film> getFilms();
 
+    public Film getFilm(Integer id);
+
 
 }
