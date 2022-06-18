@@ -20,6 +20,8 @@ public class InMemoryFilmStorage implements FilmStorage {
     private int idGlobal;
     private ValidationControl validationControl;
 
+    public InMemoryFilmStorage() {};
+
     @Autowired
     public InMemoryFilmStorage(ValidationControl validationControl) {
         this.validationControl = validationControl;
@@ -28,6 +30,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     //Добавить фильм в библиотеку
     @Override
     public Film add(Film film) {
+        log.debug("Довление фильма в библиотеку");
         validationControl.createValidationFilm(film);
         setId(); //Итерация id.
         film.setId(idGlobal); //Присвоение id фильму.

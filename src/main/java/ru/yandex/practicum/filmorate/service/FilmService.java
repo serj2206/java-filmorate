@@ -8,7 +8,6 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +34,7 @@ public class FilmService {
             throw new FilmNotDetectedException(String.format("Фильм c id= %s не обнаружен", idFilm));
         }
         Film film = inMemoryFilmStorage.getFilm(idFilm);
-        film.addLike(idUser);
+        film.getLikes().add(idUser); //добавление лайка
         return true;
     }
 
@@ -48,16 +47,17 @@ public class FilmService {
             throw new FilmNotDetectedException(String.format("Фильм c id= %s не обнаружен", idFilm));
         }
         Film film = inMemoryFilmStorage.getFilm(idFilm);
-        film.deleteLike(idUser);
+        film.getLikes().remove(idUser); //Удаление лайка
         return true;
     }
 
     //Предоставление списка состоящего из числа count наиболее популярных фильмов по количеству лайков
     public List<Film> getTop(int count) {
+
         return inMemoryFilmStorage.getFilms().stream()
                 .sorted((Film film1, Film film2) -> {
-                        if (film1.getLike().size() > film2.getLike().size()) return -1;
-                        if (film1.getLike().size() < film2.getLike().size()) return 1;
+                        if (film1.getLikes().size() > film2.getLikes().size()) return -1;
+                        if (film1.getLikes().size() < film2.getLikes().size()) return 1;
                         return 0;
                 })
                 .limit(count)

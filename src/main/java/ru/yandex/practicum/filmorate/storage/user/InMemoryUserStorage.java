@@ -19,6 +19,7 @@ public class InMemoryUserStorage implements UserStorage {
     private ValidationControl validationControl;
     private Map<Integer, User> listUser = new HashMap<>();
     int idGlobal = 0;
+    public InMemoryUserStorage(){};
 
     @Autowired
     public InMemoryUserStorage(ValidationControl validationControl) {

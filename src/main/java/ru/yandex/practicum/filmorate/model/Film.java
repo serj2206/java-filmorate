@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Builder(toBuilder = true)
@@ -36,23 +35,4 @@ public class Film {
     private int duration;
 
     private final HashSet<Integer> likes = new HashSet<>();
-    //Добавление лайка от пользователя с id = idUser
-    public boolean addLike(Integer idUser) {
-        likes.add(idUser);
-        return true;
-    }
-    //Удаление лайка от пользователя с id = idUser
-    public boolean deleteLike(Integer idUser) {
-        if(likes.contains(idUser)) {
-            likes.remove(idUser);
-            return true;
-        }
-        return false;
-    }
-
-    //Предоставление списка пользователей поставивших лайк
-    public List<Integer> getLike() {
-        return new ArrayList<>(likes);
-    }
-
 }

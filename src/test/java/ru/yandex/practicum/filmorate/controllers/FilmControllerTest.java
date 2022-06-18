@@ -5,8 +5,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.yandex.practicum.filmorate.exceptions.FilmNotDetectedException;
+import ru.yandex.practicum.filmorate.exceptions.UserNotDetectedException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -44,8 +51,26 @@ class FilmControllerTest {
         return  exception;
     }
 
+    private FilmNotDetectedException captureFilmNotDetectedExceptionPUT(Film film){
+        final FilmNotDetectedException exception = assertThrows (
+                FilmNotDetectedException.class, new Executable() {
+                    @Override
+                    public void execute() {
+                        filmController.update(film);
+                    }
+                }
+        );
+        return  exception;
+    }
+
     @BeforeEach
     public void begin() {
+        ValidationControl validationControl = new ValidationControl();
+        FilmStorage inMemoryFilmStorage = new InMemoryFilmStorage(validationControl);
+        UserStorage inMemoryUserStorage = new InMemoryUserStorage(validationControl);
+        FilmService filmService = new FilmService(inMemoryFilmStorage,inMemoryUserStorage);
+        filmController = new FilmController(inMemoryFilmStorage, filmService);
+
         film1 = Film.builder()
                 .name("Ракета")
                 .description("Полеты во сне и на яву")
@@ -62,7 +87,6 @@ class FilmControllerTest {
 
         film3 = Film.builder().build();
 
-        filmController = new FilmController();
     }
 
     //***POST - тесты***
@@ -240,8 +264,8 @@ class FilmControllerTest {
         filmController.create(film1);
         Film updateFilm = film1.toBuilder().id(10).build();
 
-        ValidationException exception1;
-        exception1 = captureExceptionPUT(updateFilm);
+        FilmNotDetectedException exception1;
+        exception1 = captureFilmNotDetectedExceptionPUT(updateFilm);
 
         assertEquals("ID фильма не найдено!", exception1.getMessage());
 
@@ -354,4 +378,7 @@ class FilmControllerTest {
 
         log.debug("Конец теста: updateFilmLocalDateTest\n");
     }
+
+    //------------------------------------------------------------------------------------------
+    //Тесты Спринт 9
 }

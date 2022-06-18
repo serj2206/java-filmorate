@@ -5,8 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.yandex.practicum.filmorate.exceptions.UserNotDetectedException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -46,10 +51,25 @@ class UserControllerTest {
         );
         return  exception;
     }
+    private UserNotDetectedException captureUserNotDetectedExceptionPUT(User user){
+        final UserNotDetectedException exception = assertThrows (
+                UserNotDetectedException.class, new Executable() {
+                    @Override
+                    public void execute() {
+                        userController.update(user);
+                    }
+                }
+        );
+        return  exception;
+    }
 
     @BeforeEach
     public void begin() {
-        userController = new UserController();
+        ValidationControl validationControl = new ValidationControl();
+        InMemoryUserStorage inMemoryUserStorage = new InMemoryUserStorage(validationControl);
+        UserService userService = new UserService(inMemoryUserStorage);
+        userController = new UserController(inMemoryUserStorage, userService);
+
         user1 = User.builder().build();
         user2 = User.builder()
                 .id(10)
@@ -385,7 +405,7 @@ class UserControllerTest {
 
         user2.setId(0);
 
-        ValidationException exception1 = captureExceptionPUT(user2);
+        UserNotDetectedException exception1 = captureUserNotDetectedExceptionPUT(user2);
         assertEquals("ID пользователя не найдено!", exception1.getMessage());
 
         log.debug("Тест {} завершен \n", "updateUserIdNotTest()");
@@ -398,7 +418,7 @@ class UserControllerTest {
         userController.create(user2);
         user2.setId(10);
 
-        ValidationException exception1 = captureExceptionPUT(user2);
+        UserNotDetectedException exception1 = captureUserNotDetectedExceptionPUT(user2);
         assertEquals("ID пользователя не найдено!", exception1.getMessage());
 
         log.debug("Тест {} завершен \n", "updateUserIdFalseTest()");
@@ -419,4 +439,7 @@ class UserControllerTest {
         assertTrue(listUserTest.containsAll(userController.getList()));
         log.debug("Тест {} завершен \n", "getListUsersTest()");
     }
+
+    //------------------------------------------------------------------------------------------
+    //Тесты Спринт 9
 }

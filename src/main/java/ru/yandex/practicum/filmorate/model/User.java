@@ -35,24 +35,4 @@ public class User {
     private LocalDate birthday;
 
     private final Set<Integer> friends =new HashSet<>();
-
-    //Добавить пользователя в список друзей
-    public boolean addFriend(Integer id) {
-        friends.add(id);
-        return true;
-    }
-    //Удалить пользователя из списка друзей
-    public boolean deleteFriend(Integer id) {
-        if (friends.contains(id)){
-            friends.remove(id);
-            return true;
-        }
-        return false;
-    }
-
-    //Дать список друзей
-    public List<Integer> getAllFriends() {
-        return new ArrayList<>(friends);
-    }
-
 }

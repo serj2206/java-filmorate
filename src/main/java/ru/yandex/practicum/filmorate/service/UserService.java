@@ -32,8 +32,8 @@ public class UserService {
         if (toUser == null) {
             throw new UserNotDetectedException(String.format("Пользователь c id= %s не обнаружен", fromUserId));
         }
-        toUser.addFriend(fromUserId);
-        fromUser.addFriend(toUserId);
+        toUser.getFriends().add(fromUserId); //Добавляем в список друзей
+        fromUser.getFriends().add(toUserId); //добавляем в список друзей
         return true;
     }
 
@@ -47,8 +47,8 @@ public class UserService {
         if (toUser == null) {
             throw new UserNotDetectedException(String.format("Пользователь c id= %s не обнаружен", fromUserId));
         }
-        toUser.deleteFriend(fromUserId);
-        fromUser.deleteFriend(toUserId);
+        toUser.getFriends().remove(fromUserId); //удаляем из списка друзей
+        fromUser.getFriends().remove(toUserId); //Удаляем из списка друзей
         return true;
     }
 
@@ -58,10 +58,11 @@ public class UserService {
         if (user == null) {
             throw new UserNotDetectedException(String.format("Пользователь c id= %s не обнаружен", id));
         }
-        List<Integer> listIdFriends = inMemoryUserStorage.getUser(id).getAllFriends();
+        List<Integer> listIdFriends = new ArrayList<>(inMemoryUserStorage.getUser(id).getFriends());
         List<User> listFriend = new ArrayList<>();
+
         for (Integer idFriend : listIdFriends){
-            if (inMemoryUserStorage.getUser(idFriend) != null) {
+            if (inMemoryUserStorage.getUser(idFriend) != null) { //проверяем если id пользователя в списке друзей друга
                 listFriend.add(inMemoryUserStorage.getUser(idFriend));
             }
         }
@@ -78,16 +79,16 @@ public class UserService {
         if (otherUser == null) {
             throw new UserNotDetectedException(String.format("Пользователь c id= %s не обнаружен", otherId));
         }
-        List<Integer> listFriend = user.getAllFriends();
-        List<Integer> listOtherFriend =otherUser.getAllFriends();
-        List<User> listFriends = new ArrayList<>();
+        List<Integer> listFriends = new ArrayList<>(user.getFriends());
+        List<Integer> listOtherFriend =new ArrayList<>(otherUser.getFriends());
+        List<User> listCommonFriends = new ArrayList<>();
 
-        for (Integer i : listFriend) {
-            if (listOtherFriend.contains(i)) {
-                listFriends.add(inMemoryUserStorage.getUser(i));
+        for (Integer idFriend : listFriends) {
+            if (listOtherFriend.contains(idFriend)) {
+                listCommonFriends.add(inMemoryUserStorage.getUser(idFriend));
             }
         }
-        return listFriends;
+        return listCommonFriends;
     }
 
 }
