@@ -2,6 +2,8 @@ package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exceptions.FilmNotDetectedException;
+import ru.yandex.practicum.filmorate.exceptions.UserNotDetectedException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
@@ -41,7 +43,7 @@ public class ValidationControl {
         createValidationUser(user);
 
         if (!listUser.containsKey(user.getId())) {
-            throw new ValidationException("ID пользователя не найдено!");
+            throw new UserNotDetectedException("ID пользователя не найдено!");
         }
 
         log.debug("ID пользователя {}.", user.getId());
@@ -72,35 +74,10 @@ public class ValidationControl {
 
     public Film updateValidationFilm (Film film, Map<Integer, Film> collectionFilms) {
         createValidationFilm(film);
-        /*
-        if (film == null) {
-            throw new ValidationException("Тело запроса отсутствует!");
-        }
 
-         */
         if (!collectionFilms.containsKey(film.getId())) {
-            throw new ValidationException("ID фильма не найдено!");
+            throw new FilmNotDetectedException("ID фильма не найдено!");
         }
-/*
-        if (film.getName() == null || film.getName().isBlank()) {
-            throw new ValidationException("Отсутствует название фильма!");
-        }
-
-        if (film.getDescription().length() > 200) {
-            throw new ValidationException("Количество символов в описании превышает 200 символов!");
-        }
-
-        if (film.getDuration() <= 0) {
-            throw new ValidationException("Продолжительность фильма задана отрицательным числом или равна нулю!");
-        }
-
-        if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
-            throw new ValidationException("Дата представления фильма стоит до 28 декабря 1895года!");
-        }
-
- */
-
-
         return film;
     }
 

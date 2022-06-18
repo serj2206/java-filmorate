@@ -56,8 +56,8 @@ public class FilmService {
     public List<Film> getTop(int count) {
         return inMemoryFilmStorage.getFilms().stream()
                 .sorted((Film film1, Film film2) -> {
-                        if (film1.getLike().size() > film2.getLike().size()) return 1;
-                        if (film1.getLike().size() < film2.getLike().size()) return -1;
+                        if (film1.getLike().size() > film2.getLike().size()) return -1;
+                        if (film1.getLike().size() < film2.getLike().size()) return 1;
                         return 0;
                 })
                 .limit(count)

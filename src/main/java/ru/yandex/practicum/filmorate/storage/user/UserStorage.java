@@ -6,7 +6,7 @@ import java.util.Collection;
 
 
 public interface UserStorage {
-//Добавление пользователя
+    //Добавление пользователя
     public User add(User user);
 
     //Удаление пользователя

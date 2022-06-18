@@ -58,7 +58,7 @@ public class UserService {
         if (user == null) {
             throw new UserNotDetectedException(String.format("Пользователь c id= %s не обнаружен", id));
         }
-        List<Integer> listIdFriends = inMemoryUserStorage.getUser(id).getFriends();
+        List<Integer> listIdFriends = inMemoryUserStorage.getUser(id).getAllFriends();
         List<User> listFriend = new ArrayList<>();
         for (Integer idFriend : listIdFriends){
             if (inMemoryUserStorage.getUser(idFriend) != null) {
@@ -78,8 +78,8 @@ public class UserService {
         if (otherUser == null) {
             throw new UserNotDetectedException(String.format("Пользователь c id= %s не обнаружен", otherId));
         }
-        List<Integer> listFriend = user.getFriends();
-        List<Integer> listOtherFriend =otherUser.getFriends();
+        List<Integer> listFriend = user.getAllFriends();
+        List<Integer> listOtherFriend =otherUser.getAllFriends();
         List<User> listFriends = new ArrayList<>();
 
         for (Integer i : listFriend) {

@@ -40,6 +40,27 @@ public class UserController {
         return inMemoryUserStorage.update(user);
     }
 
+    //Добавление в друзья
+    @PutMapping("/users/{id}/friends/{friendId}")
+    public void getFriend(@PathVariable Integer id,
+                          @PathVariable Integer friendId) {
+        userService.addFriend(id, friendId);
+    }
+
+    //Предоставление пользователя по id
+    @GetMapping("users/{id}")
+    public User getUser(@PathVariable Integer id) {
+        if (id == null) throw new NullPointerException();
+        return inMemoryUserStorage.getUser(id);
+    }
+
+    //Предоставление списка друзей пользователя
+    @GetMapping("/users/{id}/friends")
+    public List<User> getListFriends(@PathVariable Integer id) {
+        if (id == null) throw new NullPointerException();
+        return (List<User>) userService.getListFriends(id);
+    }
+
     //эндпоинт: получение списка всех пользователей.
     @GetMapping("/users")
     public Collection<User> getList() {
@@ -47,25 +68,18 @@ public class UserController {
         return inMemoryUserStorage.getList();
     }
 
-    //Добавление в друзья
-    @PutMapping("/users/{id}/friends/{friendId}")
-    public void getFriend(@PathVariable Integer id,
-                         @PathVariable Integer friendId) {
-        userService.addFriend(id, friendId);
-    }
-
-    //Удаление из друзей
-    @DeleteMapping("DELETE /users/{id}/friends/{friendId}")
-    public void deleteFriend(@PathVariable Integer id,
-                             @PathVariable Integer friendId) {
-        userService.deleteFriend(id, friendId);
-    }
-
     //Предоставление списка друзей являющихся общими с его друзьями
     @GetMapping("/users/{id}/friends/common/{otherId}")
     public List<User> getCommonFriends(@PathVariable Integer id,
                                        @PathVariable Integer otherId) {
         return userService.getCommonFriends(id, otherId);
+    }
+
+    //Удаление из друзей
+    @DeleteMapping("/users/{id}/friends/{friendId}")
+    public void deleteFriend(@PathVariable Integer id,
+                             @PathVariable Integer friendId) {
+        userService.deleteFriend(id, friendId);
     }
 }
 

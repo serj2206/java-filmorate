@@ -38,13 +38,6 @@ public class FilmController {
         return inMemoryFilmStorage.update(film);
     }
 
-    // эндпоинт: получение всех фильмов
-    @GetMapping("/films")
-    public Collection<Film> getList() {
-        log.debug("Получен GET-запрос на предоставление списка фильмов.");
-        return inMemoryFilmStorage.getFilms();
-    }
-
     //Пользователь ставит лайк фильму.
     @PutMapping("/films/{id}/like/{userId}")
     public void addLike(@PathVariable Integer id,
@@ -52,11 +45,18 @@ public class FilmController {
         filmService.addLike(id, userId);
     }
 
-    //Пользователь удаляет лайк.
-    @DeleteMapping("/films/{id}/like/{userId}")
-    public void deleteLike(@PathVariable Integer id,
-                           @PathVariable Integer userId) {
-        filmService.deleteLike(id, userId);
+    // эндпоинт: получение всех фильмов
+    @GetMapping("/films")
+    public Collection<Film> getList() {
+        log.debug("Получен GET-запрос на предоставление списка фильмов.");
+        return inMemoryFilmStorage.getFilms();
+    }
+
+    //Предоставление фильма по id
+    @GetMapping("/films/{id}")
+    public Film getFilm(@PathVariable Integer id) {
+        log.debug("Получен GET-запрос на предоставление списка фильмов.");
+        return inMemoryFilmStorage.getFilm(id);
     }
 
     //Возвращает список из первых count фильмов по количеству лайков.
@@ -64,5 +64,12 @@ public class FilmController {
     @GetMapping("/films/popular")
     public List<Film> getTopFilm(@RequestParam(defaultValue = "10") Integer count) {
         return filmService.getTop(count);
+    }
+
+    //Пользователь удаляет лайк.
+    @DeleteMapping("/films/{id}/like/{userId}")
+    public void deleteLike(@PathVariable Integer id,
+                           @PathVariable Integer userId) {
+        filmService.deleteLike(id, userId);
     }
 }

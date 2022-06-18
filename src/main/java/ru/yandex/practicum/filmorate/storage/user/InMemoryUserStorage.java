@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import ru.yandex.practicum.filmorate.controllers.ValidationControl;
+import ru.yandex.practicum.filmorate.exceptions.UserNotDetectedException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
@@ -20,9 +21,11 @@ public class InMemoryUserStorage implements UserStorage {
     int idGlobal = 0;
 
     @Autowired
-    public InMemoryUserStorage(ValidationControl validationControl){
+    public InMemoryUserStorage(ValidationControl validationControl) {
         this.validationControl = validationControl;
     }
+
+    //Добавление нового пользователя
     @Override
     public User add(@Validated User user) {
         log.debug("Получен POST-запрос на добавление нового пользователя.");
@@ -34,10 +37,11 @@ public class InMemoryUserStorage implements UserStorage {
         return user;
     }
 
+    //Удаление пользователя по iD
     @Override
     public User delete(Integer id) {
         User user;
-        if(listUser.containsKey(id)) {
+        if (listUser.containsKey(id)) {
             user = listUser.get(id);
             listUser.remove(id);
             log.debug("Пользователь с login {} удален", user.getLogin());
@@ -48,25 +52,28 @@ public class InMemoryUserStorage implements UserStorage {
         return user;
     }
 
+    //Обновление пользователя по ID
     @Override
-    public User update(@Validated User user){
+    public User update(@Validated User user) {
         validationControl.updateValidationUser(user, listUser);
         listUser.put(user.getId(), user);
         log.debug("Данные пользователя с ID = {} успешно обновлены.", user.getId());
         return user;
     }
 
+    //Ппредоставление списка пользователей
     @Override
     public Collection<User> getList() {
         return listUser.values();
     }
 
+    //Предоставление данных пользователя по ID
     @Override
-    public User getUser(Integer id){
+    public User getUser(Integer id) {
         if (listUser.containsKey(id)) {
             return listUser.get(id);
         }
-        return null;
+        throw new UserNotDetectedException(String.format("Пользователь с id %s не найден", id));
     }
 
     //Итерация ID

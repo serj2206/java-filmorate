@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice(value = "ru.yandex.practucum.filmorate.controllers")
+@RestControllerAdvice(value = "ru.yandex.practicum.filmorate.controllers")
 public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -25,6 +25,6 @@ public class ErrorHandler {
         return new ErrorResponse("ID не обнаружен", e.getMessage());
     }
 
-    
+
 
 }

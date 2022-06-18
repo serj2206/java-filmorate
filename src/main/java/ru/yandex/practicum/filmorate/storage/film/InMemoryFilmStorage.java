@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.controllers.ValidationControl;
+import ru.yandex.practicum.filmorate.exceptions.FilmNotDetectedException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -27,21 +28,16 @@ public class InMemoryFilmStorage implements FilmStorage {
     //Добавить фильм в библиотеку
     @Override
     public Film add(Film film) {
-
         validationControl.createValidationFilm(film);
-
         setId(); //Итерация id.
         film.setId(idGlobal); //Присвоение id фильму.
         collectionFilms.put(idGlobal, film); //Помещение фильма в коллекцию
-
         log.debug("Фильм с названием {} успешно добавлен. Присвоено ID = {}.", film.getName(), film.getId());
-
         return film;
     }
 
     //Удалить фильм из библиотеки
     public Film delete(Integer id) {
-
         Film film;
         if (collectionFilms.containsKey(id)) {
             film = collectionFilms.get(id);
@@ -51,18 +47,14 @@ public class InMemoryFilmStorage implements FilmStorage {
             film = null;
             log.debug("Фильм с id {} не найден", id); //тут видимо нужно прерывание
         }
-
         return film;
     }
 
     //Обновить фильм в библиотеке
     public Film update(Film film) {
-
         validationControl.updateValidationFilm(film, collectionFilms);
-
         collectionFilms.put(film.getId(), film); //Обновление фильма в коллекции
         log.debug("Фильм с ID = {} успешно обновлен.", film.getId());
-
         return film;
     }
 
@@ -72,13 +64,13 @@ public class InMemoryFilmStorage implements FilmStorage {
         return collectionFilms.values();
     }
 
-    //Предоставление фильма
+    //Предоставление фильма по id
     @Override
     public Film getFilm(Integer id) {
         if (collectionFilms.containsKey(id)) {
             return collectionFilms.get(id);
         }
-        return null;
+        throw new FilmNotDetectedException(String.format("Фильм с id %s не найден", id));
     }
 
 

@@ -35,7 +35,7 @@ public class Film {
     @NotNull
     private int duration;
 
-    private HashSet<Integer> likes;
+    private final HashSet<Integer> likes = new HashSet<>();
     //Добавление лайка от пользователя с id = idUser
     public boolean addLike(Integer idUser) {
         likes.add(idUser);
