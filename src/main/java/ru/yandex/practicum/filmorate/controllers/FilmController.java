@@ -2,82 +2,79 @@ package ru.yandex.practicum.filmorate.controllers;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
-import java.time.LocalDate;
 import java.util.*;
 
 @RestController
 @Slf4j
 public class FilmController {
+    private FilmStorage inMemoryFilmStorage;
+    private FilmService filmService;
+    public FilmController() {
+    }
+    @Autowired
+    public FilmController(FilmStorage inMemoryFilmStorage, FilmService filmService) {
+        this.inMemoryFilmStorage = inMemoryFilmStorage;
+        this.filmService = filmService;
+    }
 
-    private Map<Integer, Film> collectionFilms = new HashMap<>();
-    private int id;
-
-    /*
     // эндпоинт: добавление фильма
-    */
     @PostMapping("/films")
     public Film create(@Validated @RequestBody Film film) {
-        log.debug("Получен POST-запрос на добавление фильма.");
-        ValidationControl validationControl = new ValidationControl();
-        validationControl.createValidationFilm(film);
-
-        setId(); //Итерация id.
-        film.setId(id); //Присвоение id фильму.
-        collectionFilms.put(id, film); //Помещение фильма в коллекцию
-        log.debug("Фильм с названием {} успешно добавлен. Присвоено ID = {}.", film.getName(), film.getId());
-        return film;
+        log.info("Получен POST-запрос на добавление фильма.");
+        return inMemoryFilmStorage.add(film);
     }
 
-    /*
     // эндпоинт: обновление фильма
-    */
     @PutMapping("/films")
     public Film update(@Validated @RequestBody Film film) {
-        log.debug("Получен PUT-запрос на обновление фильма.");
-        ValidationControl validationControl = new ValidationControl();
-        validationControl.updateValidationFilm(film, collectionFilms);
-
-        collectionFilms.put(film.getId(), film); //Обновление фильма в коллекции
-        log.debug("Фильм с ID = {} успешно обновлен.", film.getId());
-        return film;
+        log.info("Получен PUT-запрос на обновление фильма.");
+        return inMemoryFilmStorage.update(film);
     }
 
-    /*
+    //Пользователь ставит лайк фильму.
+    @PutMapping("/films/{id}/like/{userId}")
+    public void addLike(@PathVariable Integer id,
+                        @PathVariable Integer userId) {
+        if (id == null) throw new NullPointerException("Id = null");
+        if (userId == null) throw new NullPointerException("userId = null");
+        filmService.addLike(id, userId);
+    }
+
     // эндпоинт: получение всех фильмов
-    */
     @GetMapping("/films")
     public Collection<Film> getList() {
-        log.debug("Получен GET-запрос на предоставление списка фильмов.");
-        return collectionFilms.values();
+        log.info("Получен GET-запрос на предоставление списка фильмов.");
+        return inMemoryFilmStorage.getFilms();
     }
 
-    //Итерация ID
-    private void setId() {
-        id++;
-        log.debug("Счетчик ID фильмов увеличен на единицу.");
+    //Предоставление фильма по id
+    @GetMapping("/films/{id}")
+    public Film getFilm(@PathVariable Integer id) {
+        log.info("Получен GET-запрос на предоставление списка фильмов.");
+        if (id == null) throw new NullPointerException("Id = null");
+        return inMemoryFilmStorage.getFilm(id);
     }
 
-    //Нахождение максимального ID
-    private int getId() {
-        log.debug("Нахождение максимального ID фильма.");
-        int max = 0;
-        if (collectionFilms.isEmpty()) id = 0;
-        else {
-            for (int idFilm : collectionFilms.keySet()) {
-                if (max < idFilm) {
-                    max = idFilm;
-                }
-            }
-        }
-        id = max;
-        log.debug("Максимальное ID фильма: {}.", max);
-        return id;
+    //Возвращает список из первых count фильмов по количеству лайков.
+    // Если значение параметра count не задано, верните первые 10.
+    @GetMapping("/films/popular")
+    public List<Film> getTopFilm(@RequestParam(defaultValue = "10") Integer count) {
+        return filmService.getTop(count);
+    }
+
+    //Пользователь удаляет лайк.
+    @DeleteMapping("/films/{id}/like/{userId}")
+    public void deleteLike(@PathVariable Integer id,
+                           @PathVariable Integer userId) {
+        if (id == null) throw new NullPointerException("Id = null");
+        if (userId == null) throw new NullPointerException("userId = null");
+        filmService.deleteLike(id, userId);
     }
 }

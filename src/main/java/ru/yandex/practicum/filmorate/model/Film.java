@@ -5,10 +5,10 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 @Data
 @Builder(toBuilder = true)
@@ -34,4 +34,5 @@ public class Film {
     @NotNull
     private int duration;
 
+    private final HashSet<Integer> likes = new HashSet<>();
 }
