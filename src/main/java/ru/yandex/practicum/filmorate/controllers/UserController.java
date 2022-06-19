@@ -42,22 +42,26 @@ public class UserController {
 
     //Добавление в друзья
     @PutMapping("/users/{id}/friends/{friendId}")
-    public void getFriend(@PathVariable Integer id,
+    public void addFriend(@PathVariable Integer id,
                           @PathVariable Integer friendId) {
+        log.debug("Получен Put запрос на добавления в друзья");
+        if (id == null) throw new NullPointerException("Id = null");
+        if (friendId == null) throw new NullPointerException("friendId = null");
         userService.addFriend(id, friendId);
     }
 
     //Предоставление пользователя по id
     @GetMapping("users/{id}")
     public User getUser(@PathVariable Integer id) {
-        if (id == null) throw new NullPointerException();
+        if (id == null) throw new NullPointerException("Id = null");
         return inMemoryUserStorage.getUser(id);
     }
 
     //Предоставление списка друзей пользователя
     @GetMapping("/users/{id}/friends")
     public List<User> getListFriends(@PathVariable Integer id) {
-        if (id == null) throw new NullPointerException();
+        log.debug("Получен Put запрос на получение списка друзей");
+        if (id == null) throw new NullPointerException("Id = null");
         return (List<User>) userService.getListFriends(id);
     }
 
@@ -72,6 +76,8 @@ public class UserController {
     @GetMapping("/users/{id}/friends/common/{otherId}")
     public List<User> getCommonFriends(@PathVariable Integer id,
                                        @PathVariable Integer otherId) {
+        if (id == null) throw new NullPointerException("Id = null");
+        if (otherId == null) throw new NullPointerException("otherId = null");
         return userService.getCommonFriends(id, otherId);
     }
 
@@ -79,6 +85,8 @@ public class UserController {
     @DeleteMapping("/users/{id}/friends/{friendId}")
     public void deleteFriend(@PathVariable Integer id,
                              @PathVariable Integer friendId) {
+        if (id == null) throw new NullPointerException("Id = null");
+        if (friendId == null) throw new NullPointerException("otherId = null");
         userService.deleteFriend(id, friendId);
     }
 }

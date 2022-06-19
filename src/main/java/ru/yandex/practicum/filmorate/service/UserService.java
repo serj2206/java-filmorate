@@ -23,29 +23,23 @@ public class UserService {
     }
 
     //Добавить пользователя fromUserId в друзья к пользователю toUserId
-    public boolean addFriend (Integer fromUserId, Integer toUserId) {
+    public boolean addFriend (Integer toUserId, Integer fromUserId) {
         User fromUser = inMemoryUserStorage.getUser(fromUserId);
         User toUser = inMemoryUserStorage.getUser(toUserId);
-        if (fromUser == null) {
-            throw new UserNotDetectedException(String.format("Пользователь c id= %s не обнаружен", fromUserId));
-        }
-        if (toUser == null) {
-            throw new UserNotDetectedException(String.format("Пользователь c id= %s не обнаружен", fromUserId));
-        }
         toUser.getFriends().add(fromUserId); //Добавляем в список друзей
         fromUser.getFriends().add(toUserId); //добавляем в список друзей
         return true;
     }
 
     //Удалить пользователя fromUserId из друзей пользователя toUserId
-    public boolean deleteFriend (Integer fromUserId, Integer toUserId) {
+    public boolean deleteFriend (Integer toUserId, Integer  fromUserId) {
         User fromUser = inMemoryUserStorage.getUser(fromUserId);
         User toUser = inMemoryUserStorage.getUser(toUserId);
         if (fromUser == null) {
             throw new UserNotDetectedException(String.format("Пользователь c id= %s не обнаружен", fromUserId));
         }
         if (toUser == null) {
-            throw new UserNotDetectedException(String.format("Пользователь c id= %s не обнаружен", fromUserId));
+            throw new UserNotDetectedException(String.format("Пользователь c id= %s не обнаружен", toUser));
         }
         toUser.getFriends().remove(fromUserId); //удаляем из списка друзей
         fromUser.getFriends().remove(toUserId); //Удаляем из списка друзей

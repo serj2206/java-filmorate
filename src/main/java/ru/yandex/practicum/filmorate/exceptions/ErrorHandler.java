@@ -10,19 +10,19 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidationException (final ValidationException e){
-        return new ErrorResponse("Ошибка валидации", e.getMessage());
+        return new ErrorResponse("Ошибка валидации ", e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleFilmNotDetectedException(final FilmNotDetectedException e) {
-        return new ErrorResponse("ID не обнаружен", e.getMessage());
+        return new ErrorResponse("ID не обнаружен ", e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleUserNotDetectedException(final UserNotDetectedException e) {
-        return new ErrorResponse("ID не обнаружен", e.getMessage());
+        return new ErrorResponse("ID не обнаружен ", e.getMessage());
     }
 
 

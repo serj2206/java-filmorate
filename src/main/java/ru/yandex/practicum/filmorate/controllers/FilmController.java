@@ -42,6 +42,8 @@ public class FilmController {
     @PutMapping("/films/{id}/like/{userId}")
     public void addLike(@PathVariable Integer id,
                         @PathVariable Integer userId) {
+        if (id == null) throw new NullPointerException("Id = null");
+        if (userId == null) throw new NullPointerException("userId = null");
         filmService.addLike(id, userId);
     }
 
@@ -56,6 +58,7 @@ public class FilmController {
     @GetMapping("/films/{id}")
     public Film getFilm(@PathVariable Integer id) {
         log.debug("Получен GET-запрос на предоставление списка фильмов.");
+        if (id == null) throw new NullPointerException("Id = null");
         return inMemoryFilmStorage.getFilm(id);
     }
 
@@ -70,6 +73,8 @@ public class FilmController {
     @DeleteMapping("/films/{id}/like/{userId}")
     public void deleteLike(@PathVariable Integer id,
                            @PathVariable Integer userId) {
+        if (id == null) throw new NullPointerException("Id = null");
+        if (userId == null) throw new NullPointerException("userId = null");
         filmService.deleteLike(id, userId);
     }
 }
