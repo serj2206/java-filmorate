@@ -33,7 +33,7 @@ public class ValidationControl {
         }
 
         if (user.getName() == null || user.getName().isBlank()) {
-            log.debug("Имя пользователя не указано.");
+            log.info("Имя пользователя не указано.");
             user.setName(user.getLogin());
         }
         return user;
@@ -46,7 +46,7 @@ public class ValidationControl {
             throw new UserNotDetectedException("ID пользователя не найдено!");
         }
 
-        log.debug("ID пользователя {}.", user.getId());
+        log.info("ID пользователя {}.", user.getId());
         return user;
     }
 

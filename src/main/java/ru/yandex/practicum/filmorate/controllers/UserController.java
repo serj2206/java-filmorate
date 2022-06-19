@@ -29,14 +29,14 @@ public class UserController {
     //эндпоинт: создание пользователя;
     @PostMapping("/users")
     public User create(@Validated @RequestBody User user) {
-        log.debug("Получен POST-запрос на добавление нового пользователя.");
+        log.info("Получен POST-запрос на добавление нового пользователя.");
         return inMemoryUserStorage.add(user);
     }
 
     //эндпоинт: обновление пользователя;
     @PutMapping("/users")
     public User update(@Valid @RequestBody User user) {
-        log.debug("Получен PUT-запрос на обновление данных пользователя.");
+        log.info("Получен PUT-запрос на обновление данных пользователя.");
         return inMemoryUserStorage.update(user);
     }
 
@@ -44,7 +44,7 @@ public class UserController {
     @PutMapping("/users/{id}/friends/{friendId}")
     public void addFriend(@PathVariable Integer id,
                           @PathVariable Integer friendId) {
-        log.debug("Получен Put запрос на добавления в друзья");
+        log.info("Получен Put запрос на добавления в друзья");
         if (id == null) throw new NullPointerException("Id = null");
         if (friendId == null) throw new NullPointerException("friendId = null");
         userService.addFriend(id, friendId);
@@ -60,7 +60,7 @@ public class UserController {
     //Предоставление списка друзей пользователя
     @GetMapping("/users/{id}/friends")
     public List<User> getListFriends(@PathVariable Integer id) {
-        log.debug("Получен Put запрос на получение списка друзей");
+        log.info("Получен Put запрос на получение списка друзей");
         if (id == null) throw new NullPointerException("Id = null");
         return (List<User>) userService.getListFriends(id);
     }
@@ -68,7 +68,7 @@ public class UserController {
     //эндпоинт: получение списка всех пользователей.
     @GetMapping("/users")
     public Collection<User> getList() {
-        log.debug("Получен GET-запрос на получение списка пользователей.");
+        log.info("Получен GET-запрос на получение списка пользователей.");
         return inMemoryUserStorage.getList();
     }
 

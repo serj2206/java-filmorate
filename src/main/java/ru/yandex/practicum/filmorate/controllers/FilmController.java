@@ -27,14 +27,14 @@ public class FilmController {
     // эндпоинт: добавление фильма
     @PostMapping("/films")
     public Film create(@Validated @RequestBody Film film) {
-        log.debug("Получен POST-запрос на добавление фильма.");
+        log.info("Получен POST-запрос на добавление фильма.");
         return inMemoryFilmStorage.add(film);
     }
 
     // эндпоинт: обновление фильма
     @PutMapping("/films")
     public Film update(@Validated @RequestBody Film film) {
-        log.debug("Получен PUT-запрос на обновление фильма.");
+        log.info("Получен PUT-запрос на обновление фильма.");
         return inMemoryFilmStorage.update(film);
     }
 
@@ -50,14 +50,14 @@ public class FilmController {
     // эндпоинт: получение всех фильмов
     @GetMapping("/films")
     public Collection<Film> getList() {
-        log.debug("Получен GET-запрос на предоставление списка фильмов.");
+        log.info("Получен GET-запрос на предоставление списка фильмов.");
         return inMemoryFilmStorage.getFilms();
     }
 
     //Предоставление фильма по id
     @GetMapping("/films/{id}")
     public Film getFilm(@PathVariable Integer id) {
-        log.debug("Получен GET-запрос на предоставление списка фильмов.");
+        log.info("Получен GET-запрос на предоставление списка фильмов.");
         if (id == null) throw new NullPointerException("Id = null");
         return inMemoryFilmStorage.getFilm(id);
     }
