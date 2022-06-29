@@ -1,6 +1,6 @@
 # java-filmorate
 Template repository for Filmorate project.
-/Diagramma.png
+![Диаграмма БД](/../add-database/Diagramma.png)
 
   
 
