@@ -1,7 +1,6 @@
 # java-filmorate
 Template repository for Filmorate project.
-
-/../add-database/Diagramma.png
+/Diagramma.png
 
   
 
@@ -13,7 +12,7 @@ Template repository for Filmorate project.
 - **Friends** - кто кого пригласил в друзья и их статус
 - **Status_Friendship** - таблица возможных статусов дружбы
 - **Films** - содержит данные о фильмах
-- **Like** - содержит ID фильма и ID пользователя, который поставил like этому вильму
+- **Like** - содержит ID фильма и ID пользователя, который поставил like этому фильму
 - **Genre_Film** - Жанр фильма: ID фильма и ID жанра
 - **Genres** - Таблица возможных жанров
 - **Age_Rating** - Таблица возможных рейтингов возрастных ограничений
