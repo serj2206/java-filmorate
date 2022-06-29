@@ -1,7 +1,7 @@
 # java-filmorate
 Template repository for Filmorate project.
 
-/../main/Diagramma.png
+/../add-database/Diagramma.png
 
   
 
