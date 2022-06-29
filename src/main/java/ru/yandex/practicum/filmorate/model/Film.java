@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder(toBuilder = true)
@@ -20,7 +21,7 @@ public class Film {
     дата релиза — releaseDate;
     продолжительность фильма — duration.
     */
-    private int id;
+    private Long id;
 
     @NotBlank
     private String name;
@@ -34,5 +35,10 @@ public class Film {
     @NotNull
     private int duration;
 
-    private final HashSet<Integer> likes = new HashSet<>();
+    private Set<Genre> genres;
+
+    private Mpa mpa;
+
+
+
 }
