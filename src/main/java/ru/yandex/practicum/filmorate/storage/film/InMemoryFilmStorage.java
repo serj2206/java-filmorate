@@ -6,18 +6,16 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.controllers.ValidationControl;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotDetectedException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
 @Slf4j
 public class InMemoryFilmStorage implements FilmStorage {
-    private Map<Integer, Film> collectionFilms = new HashMap<>();
-    private int idGlobal;
+    private Map<Long, Film> collectionFilms = new HashMap<>();
+    private Long idGlobal;
     private ValidationControl validationControl;
 
     public InMemoryFilmStorage() {};
@@ -40,7 +38,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     //Удалить фильм из библиотеки
-    public Film delete(Integer id) {
+    public Film delete(Long id) {
         Film film;
         if (collectionFilms.containsKey(id)) {
             film = collectionFilms.get(id);
@@ -69,7 +67,7 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     //Предоставление фильма по id
     @Override
-    public Film getFilm(Integer id) {
+    public Film getFilm(Long id) {
         if (collectionFilms.containsKey(id)) {
             return collectionFilms.get(id);
         }
@@ -84,12 +82,12 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     //Нахождение максимального ID
-    private int getIdGlobal() {
+    private Long getIdGlobal() {
         log.debug("Нахождение максимального ID фильма.");
-        int max = 0;
-        if (collectionFilms.isEmpty()) idGlobal = 0;
+        Long max = 0L;
+        if (collectionFilms.isEmpty()) idGlobal = 0L;
         else {
-            for (int idFilm : collectionFilms.keySet()) {
+            for (Long idFilm : collectionFilms.keySet()) {
                 if (max < idFilm) {
                     max = idFilm;
                 }

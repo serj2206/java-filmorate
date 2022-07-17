@@ -2,11 +2,13 @@ package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+
 import javax.validation.Valid;
 import java.util.*;
 
@@ -14,14 +16,14 @@ import java.util.*;
 @Slf4j
 public class UserController {
 
-    private UserStorage inMemoryUserStorage;
-    private UserService userService;
-
-    public UserController() {
-    }
+    private final UserStorage inMemoryUserStorage;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserStorage inMemoryUserStorage, UserService userService) {
+    public UserController(
+            @Qualifier("UserDbStorage")
+            UserStorage inMemoryUserStorage,
+            UserService userService) {
         this.inMemoryUserStorage = inMemoryUserStorage;
         this.userService = userService;
     }
@@ -30,7 +32,7 @@ public class UserController {
     @PostMapping("/users")
     public User create(@Validated @RequestBody User user) {
         log.info("Получен POST-запрос на добавление нового пользователя.");
-        return inMemoryUserStorage.add(user);
+        return userService.addUser(user);
     }
 
     //эндпоинт: обновление пользователя;
@@ -42,9 +44,9 @@ public class UserController {
 
     //Добавление в друзья
     @PutMapping("/users/{id}/friends/{friendId}")
-    public void addFriend(@PathVariable Integer id,
-                          @PathVariable Integer friendId) {
-        log.info("Получен Put запрос на добавления в друзья");
+    public void addFriend(@PathVariable Long id,
+                          @PathVariable Long friendId) {
+        log.info("Получен PUT запрос на добавления в друзья");
         if (id == null) throw new NullPointerException("Id = null");
         if (friendId == null) throw new NullPointerException("friendId = null");
         userService.addFriend(id, friendId);
@@ -52,14 +54,15 @@ public class UserController {
 
     //Предоставление пользователя по id
     @GetMapping("users/{id}")
-    public User getUser(@PathVariable Integer id) {
+    public User getUser(@PathVariable Long id) {
+        log.info("Получен GET запрос на пердоставления данных пользователя по id");
         if (id == null) throw new NullPointerException("Id = null");
-        return inMemoryUserStorage.getUser(id);
+        return userService.findUserById(id);
     }
 
     //Предоставление списка друзей пользователя
     @GetMapping("/users/{id}/friends")
-    public List<User> getListFriends(@PathVariable Integer id) {
+    public List<User> getListFriends(@PathVariable Long id) {
         log.info("Получен Put запрос на получение списка друзей");
         if (id == null) throw new NullPointerException("Id = null");
         return (List<User>) userService.getListFriends(id);
@@ -74,17 +77,26 @@ public class UserController {
 
     //Предоставление списка друзей являющихся общими с его друзьями
     @GetMapping("/users/{id}/friends/common/{otherId}")
-    public List<User> getCommonFriends(@PathVariable Integer id,
-                                       @PathVariable Integer otherId) {
+    public List<User> getCommonFriends(@PathVariable Long id,
+                                       @PathVariable Long otherId) {
         if (id == null) throw new NullPointerException("Id = null");
         if (otherId == null) throw new NullPointerException("otherId = null");
         return userService.getCommonFriends(id, otherId);
     }
 
+    //Удаление пользователя по id
+    @DeleteMapping("/users/{id}")
+    public User deleteUser(@PathVariable Long id){
+        log.info("Получен DELETE-запрос на удаление пользователя по id.");
+        if (id == null) throw new NullPointerException("Id = null");
+        return inMemoryUserStorage.delete(id);
+    }
+
     //Удаление из друзей
     @DeleteMapping("/users/{id}/friends/{friendId}")
-    public void deleteFriend(@PathVariable Integer id,
-                             @PathVariable Integer friendId) {
+    public void deleteFriend(@PathVariable Long id,
+                             @PathVariable Long friendId) {
+        log.info("Получен DELETE-запрос на удаление из друзей.");
         if (id == null) throw new NullPointerException("Id = null");
         if (friendId == null) throw new NullPointerException("otherId = null");
         userService.deleteFriend(id, friendId);

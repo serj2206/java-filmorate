@@ -9,7 +9,7 @@ public interface FilmStorage {
     public Film add(Film film);
 
     //Удалить фильм из библиотеки
-    public Film delete(Integer id);
+    public Film delete(Long id);
 
     //Обновить фильм в библиотеке
     public Film update(Film film);
@@ -18,7 +18,7 @@ public interface FilmStorage {
     public Collection<Film> getFilms();
 
     //Предоставление фильма по id
-    public Film getFilm(Integer id);
+    public Film getFilm(Long id);
 
 
 }

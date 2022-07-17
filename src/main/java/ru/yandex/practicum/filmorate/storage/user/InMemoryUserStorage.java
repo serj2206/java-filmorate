@@ -14,12 +14,12 @@ import java.util.Map;
 
 @Component
 @Slf4j
-public class InMemoryUserStorage implements UserStorage {
+public class InMemoryUserStorage  {
 
     private ValidationControl validationControl;
-    private Map<Integer, User> listUser = new HashMap<>();
-    int idGlobal = 0;
-    public InMemoryUserStorage(){};
+    private Map<Long, User> listUser = new HashMap<>();
+    Long idGlobal = 0L;
+    //public InMemoryUserStorage(){};
 
     @Autowired
     public InMemoryUserStorage(ValidationControl validationControl) {
@@ -27,7 +27,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     //Добавление нового пользователя
-    @Override
+    //@Override
     public User add(@Validated User user) {
         log.debug("Получен POST-запрос на добавление нового пользователя.");
         validationControl.createValidationUser(user);
@@ -39,8 +39,8 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     //Удаление пользователя по iD
-    @Override
-    public User delete(Integer id) {
+    //@Override
+    public User delete(Long id) {
         User user;
         if (listUser.containsKey(id)) {
             user = listUser.get(id);
@@ -54,7 +54,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     //Обновление пользователя по ID
-    @Override
+    //@Override
     public User update(@Validated User user) {
         validationControl.updateValidationUser(user, listUser);
         listUser.put(user.getId(), user);
@@ -63,14 +63,14 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     //Ппредоставление списка пользователей
-    @Override
+    //@Override
     public Collection<User> getList() {
         return listUser.values();
     }
 
     //Предоставление данных пользователя по ID
-    @Override
-    public User getUser(Integer id) {
+    //@Override
+    public User getUser(Long id) {
         if (listUser.containsKey(id)) {
             return listUser.get(id);
         }
@@ -84,12 +84,12 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     //Нахождение максимального ID
-    private int getIdGlobal() {
+    private Long getIdGlobal() {
         log.debug("Нахождение максимального ID пользователя.");
-        int max = 0;
-        if (listUser.isEmpty()) idGlobal = 0;
+        Long max = 0L;
+        if (listUser.isEmpty()) idGlobal = 0L;
         else {
-            for (int idUser : listUser.keySet()) {
+            for (Long idUser : listUser.keySet()) {
                 if (max < idUser) {
                     max = idUser;
                 }

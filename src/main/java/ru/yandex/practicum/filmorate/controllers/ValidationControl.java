@@ -39,7 +39,7 @@ public class ValidationControl {
         return user;
     }
 
-    public User updateValidationUser (User user, Map<Integer, User> listUser) {
+    public User updateValidationUser (User user, Map<Long, User> listUser) {
         createValidationUser(user);
 
         if (!listUser.containsKey(user.getId())) {
@@ -72,7 +72,7 @@ public class ValidationControl {
         return film;
     }
 
-    public Film updateValidationFilm (Film film, Map<Integer, Film> collectionFilms) {
+    public Film updateValidationFilm (Film film, Map<Long, Film> collectionFilms) {
         createValidationFilm(film);
 
         if (!collectionFilms.containsKey(film.getId())) {

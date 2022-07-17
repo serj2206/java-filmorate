@@ -26,7 +26,7 @@ public class FilmService {
     }
 
     //Добавление лайка от пользователя c id = idUser фильму c id = idFilm
-    public boolean addLike(Integer idFilm, Integer idUser) {
+    public boolean addLike(Long idFilm, Long idUser) {
         if (inMemoryUserStorage.getUser(idUser) == null) {
             throw new UserNotDetectedException(String.format("Пользователь c id= %s не обнаружен", idUser));
         }
@@ -39,7 +39,7 @@ public class FilmService {
     }
 
     //Удаление лайка от пользователя c id = idUser фильму c id = idFilm
-    public boolean deleteLike(Integer idFilm, Integer idUser) {
+    public boolean deleteLike(Long idFilm, Long idUser) {
         if (inMemoryUserStorage.getUser(idUser) == null) {
             throw new UserNotDetectedException(String.format("Пользователь c id= %s не обнаружен", idUser));
         }

@@ -40,8 +40,8 @@ public class FilmController {
 
     //Пользователь ставит лайк фильму.
     @PutMapping("/films/{id}/like/{userId}")
-    public void addLike(@PathVariable Integer id,
-                        @PathVariable Integer userId) {
+    public void addLike(@PathVariable Long id,
+                        @PathVariable Long userId) {
         if (id == null) throw new NullPointerException("Id = null");
         if (userId == null) throw new NullPointerException("userId = null");
         filmService.addLike(id, userId);
@@ -56,7 +56,7 @@ public class FilmController {
 
     //Предоставление фильма по id
     @GetMapping("/films/{id}")
-    public Film getFilm(@PathVariable Integer id) {
+    public Film getFilm(@PathVariable Long id) {
         log.info("Получен GET-запрос на предоставление списка фильмов.");
         if (id == null) throw new NullPointerException("Id = null");
         return inMemoryFilmStorage.getFilm(id);
@@ -71,8 +71,8 @@ public class FilmController {
 
     //Пользователь удаляет лайк.
     @DeleteMapping("/films/{id}/like/{userId}")
-    public void deleteLike(@PathVariable Integer id,
-                           @PathVariable Integer userId) {
+    public void deleteLike(@PathVariable Long id,
+                           @PathVariable Long userId) {
         if (id == null) throw new NullPointerException("Id = null");
         if (userId == null) throw new NullPointerException("userId = null");
         filmService.deleteLike(id, userId);

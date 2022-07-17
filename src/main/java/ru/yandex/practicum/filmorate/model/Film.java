@@ -20,7 +20,7 @@ public class Film {
     дата релиза — releaseDate;
     продолжительность фильма — duration.
     */
-    private int id;
+    private Long id;
 
     @NotBlank
     private String name;
@@ -34,5 +34,9 @@ public class Film {
     @NotNull
     private int duration;
 
-    private final HashSet<Integer> likes = new HashSet<>();
+    private final HashSet<Long> genres = new HashSet<>();
+
+    private final HashSet<Long> likes = new HashSet<>();
+
+    private Mpa mpa;
 }
