@@ -8,15 +8,10 @@ MERGE INTO MPA (MPA_ID, MPA_NAME, MPA_DESCRIPTION)
 MERGE INTO GENRES (GENRE_ID, GENRE_NAME)
 VALUES (1, 'Комедия' ),
        (2, 'Драма'),
-       (3, 'Триллер'),
-       (4, 'Приключения'),
-       (5, 'Боевик'),
-       (6, 'Документальный'),
-       (7, 'Научно-позновательный'),
-       (8, 'Фантастика'),
-       (9, 'Политический'),
-       (10, 'Нуар'),
-       (11, 'Детектив');
+       (3, 'Мультфильм'),
+       (4, 'Триллер'),
+       (5, 'Документальный'),
+       (6, 'Боевик');
 
 MERGE INTO STATUS_FRIENDSHIPS (STATUS_ID, STATUS_DESCRIPTION) VALUES ( 1, 'FRIEND' );
 

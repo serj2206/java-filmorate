@@ -8,20 +8,17 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.service.LikeService;
-import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
-
 import java.util.*;
 
 @RestController
 @Slf4j
 public class FilmController {
-    private final FilmStorage inMemoryFilmStorage;
+
     private final FilmService filmService;
     private final LikeService likeService;
 
     @Autowired
-    public FilmController(FilmStorage inMemoryFilmStorage, FilmService filmService, LikeService likeService) {
-        this.inMemoryFilmStorage = inMemoryFilmStorage;
+    public FilmController(FilmService filmService, LikeService likeService) {
         this.filmService = filmService;
         this.likeService = likeService;
     }
@@ -51,14 +48,12 @@ public class FilmController {
     }
 
 
-
     // эндпоинт: получение всех фильмов
     @GetMapping("/films")
     public Collection<Film> getList() {
         log.info("GET-запрос на предоставление списка фильмов.");
         return filmService.getFilms();
     }
-
 
 
     //Предоставление фильма по id --Добро

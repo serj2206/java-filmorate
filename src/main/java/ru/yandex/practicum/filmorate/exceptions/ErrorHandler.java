@@ -55,6 +55,18 @@ public class ErrorHandler {
         return new ErrorResponse("Ошибка обновления ", e.getMessage());
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handlMpaNotDetectedException(final MpaNotDetectedException e) {
+        return new ErrorResponse("ID не обнаружен  ", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handlGenreNotDetectedException(final GenreNotDetectedException e) {
+        return new ErrorResponse("ID не обнаружен  ", e.getMessage());
+    }
+
 
 
 

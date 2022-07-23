@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserService {
 
@@ -35,12 +37,14 @@ public class UserService {
 
     //Добавить пользователя
     public User addUser(User user) {
+        log.info(" UserService.addUser()");
         validationControl.createValidationUser(user);
         return findUserById(inMemoryUserStorage.add(user));
     }
 
     //Предоставить пользователя по Id
     public User findUserById(Long id) {
+        log.info(" UserService.findUserById(id = {})", id);
         Optional<User> userOptional = inMemoryUserStorage.findUserByID(id);
         if (userOptional.isPresent())
             return userOptional.get();
@@ -49,6 +53,7 @@ public class UserService {
 
     //Обновить пользователя
     public User update(User user) {
+        log.info(" UserService.update()");
         validationControl.createValidationUser(user);
         if (inMemoryUserStorage.update(user)) {
             return findUserById(user.getId());
@@ -58,11 +63,13 @@ public class UserService {
 
     //Получение списка все пользователей
     public Collection<User> getList() {
+        log.info(" UserService.getList()");
         return inMemoryUserStorage.getList();
     }
 
     //Удаление пользователя
     public User delete(Long id) {
+        log.info(" UserService.delete(id = {})", id);
         User user = findUserById(id);
         if (inMemoryUserStorage.delete(id)) return user;
         else throw new UserNotDeleteException(String.format("Ошибка удаления пользователя c id= %s", user.getId()));
@@ -70,11 +77,13 @@ public class UserService {
 
     //Найти друзей
     private boolean findFriend(Long userId, Long friendId) {
+        log.info(" UserService.findFriend(userId = {}, friendId = {})", userId, friendId);
         return (friendShipDao.findFriend(userId, friendId));
     }
 
     //Добавить пользователя friendId в друзья к пользователю userId
     public boolean addFriend(Long userId, Long friendId) {
+        log.info(" UserService.addFriend(userId = {}, friendId = {})", userId, friendId);
         findUserById(userId); //Проверить пользователя
         findUserById(friendId); //Проверить друга
         if (!findFriend(userId, friendId)) return friendShipDao.add(userId, friendId);
@@ -84,6 +93,7 @@ public class UserService {
 
     //Удалить пользователя fromUserId из друзей пользователя toUserId
     public boolean deleteFriend(Long userId, Long friendId) {
+        log.info(" UserService.deleteFriend(userId = {}, friendId = {})", userId, friendId);
         findUserById(userId); //Проверить пользователя
         findUserById(friendId); //Проверить друга
         if (findFriend(userId, friendId)) return friendShipDao.delete(userId, friendId);
@@ -93,6 +103,7 @@ public class UserService {
 
     //Список друзей пользователя
     public Collection<User> getListFriends(Long id) {
+        log.info(" UserService.getListFriends(id = {})", id);
         User user = findUserById(id);
         if (user == null) {
             throw new UserNotDetectedException(String.format("Пользователь c id= %s не обнаружен", id));
@@ -108,6 +119,7 @@ public class UserService {
 
     //Предоставление списка друзей являющихся общими с его друзьями
     public List<User> getCommonFriends(Long id, Long otherId) {
+        log.info(" UserService.getCommonFriends(id = {}, otherId = {})", id, otherId);
         findUserById(id);
         findUserById(otherId);
         List<Long> listFriends = new ArrayList<>(friendShipDao.getCommonFriends(id, otherId));

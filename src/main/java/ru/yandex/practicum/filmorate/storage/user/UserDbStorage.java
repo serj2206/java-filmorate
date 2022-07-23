@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.storage.user;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,7 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-
+@Slf4j
 @Component("UserDbStorage")
 public class UserDbStorage implements UserStorage {
     JdbcTemplate jdbcTemplate;
@@ -33,6 +34,8 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public Long add(User user) {
+        log.info("  UserDbStorage.add()");
+
         String sqlQuery = "insert into USERS (USER_NAME, LOGIN, EMAIL, BIRTHDAY) values (?, ?, ?, ?)";
         //jdbcTemplate.update(sqlQuery, user.getName(), user.getLogin(), user.getEmail(), user.getBirthday().toString());
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -53,6 +56,7 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public boolean delete(Long id) {
+        log.info("  UserDbStorage.delete(id = {})", id);
         String sqlQuery = "delete from USERS where USER_ID=?";
         if(jdbcTemplate.update(sqlQuery, id) > 0) return true;
         return false;
@@ -60,6 +64,7 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public boolean update(User user) {
+        log.info("  UserDbStorage.update()");
         String sqlQuery = "update USERS set USER_NAME=?, LOGIN=?, EMAIL=?, BIRTHDAY=? where USER_ID=?";
         if (jdbcTemplate.update(
                 sqlQuery,
@@ -75,6 +80,7 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public Optional<User> findUserByID(Long id) {
+        log.info("  UserDbStorage.findUserByID(id = {})", id);
         String sql = "select * from USERS where USER_ID=?";
         SqlRowSet userRows = jdbcTemplate.queryForRowSet(sql, id);
         if(userRows.next()) {
@@ -93,12 +99,13 @@ public class UserDbStorage implements UserStorage {
     //Список пользователей
     @Override
     public Collection<User> getList() {
+        log.info("  UserDbStorage.getList()");
         String sqlQuery = "select * from USERS ORDER BY USER_ID";
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeUser(rs));
     }
-
     @Override
     public User getUser(Long id) {
+        log.info("  UserDbStorage.getUser(id = {})", id);
         return null;
     }
 

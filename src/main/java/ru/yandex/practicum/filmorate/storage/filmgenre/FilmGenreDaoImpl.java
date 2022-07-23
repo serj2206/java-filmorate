@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.service.GenreService;
 import ru.yandex.practicum.filmorate.storage.genre.GenreDao;
 
 import java.sql.ResultSet;
@@ -14,10 +15,13 @@ import java.util.*;
 @Slf4j
 @Repository
 public class FilmGenreDaoImpl implements FilmGenreDao {
+
+    private final GenreService genreService;
     private final JdbcTemplate jdbcTemplate;
     private final GenreDao genreDao;
 
-    public FilmGenreDaoImpl(JdbcTemplate jdbcTemplate, GenreDao genreDao) {
+    public FilmGenreDaoImpl(GenreService genreService, JdbcTemplate jdbcTemplate, GenreDao genreDao) {
+        this.genreService = genreService;
         this.jdbcTemplate = jdbcTemplate;
         this.genreDao = genreDao;
     }
@@ -58,12 +62,6 @@ public class FilmGenreDaoImpl implements FilmGenreDao {
 
     private Genre makeGenre(ResultSet rs) throws SQLException {
         Integer genreId = rs.getInt("GENRE_ID");
-        Optional<Genre> optionalGenre = genreDao.findGenreById(genreId);
-        if (optionalGenre.isPresent()) {
-            return optionalGenre.get();
-        }
-        Genre genre = new Genre();
-        genre.setId(genreId);
-        return genre;
+        return genreService.findGenreById(genreId);
     }
 }

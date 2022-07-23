@@ -42,7 +42,7 @@ public class FilmService {
         this.userService = userService;
         this.validationControl = validationControl;
         this.filmGenreDao = filmGenreDao;
-        this.likeDao =likeDao;
+        this.likeDao = likeDao;
     }
 
     //Вернуть фильм по id
@@ -76,13 +76,11 @@ public class FilmService {
         throw new FilmNotUpdatedException(String.format("Ошибка обновления данных пользователя c id= %s", film.getId()));
     }
 
+    //Список фильмов
     public Collection<Film> getFilms() {
         log.info(" FilmService.update()");
         return inMemoryFilmStorage.getFilms();
     }
-
-
-
 
     //Предоставление списка состоящего из числа count наиболее популярных фильмов по количеству лайков
     public List<Film> getTop(int count) {
@@ -91,25 +89,11 @@ public class FilmService {
         List<Long> listLike = new ArrayList<>(likeDao.getTop(count));
         if (listLike != null)
             if (!listLike.isEmpty()) {
-                for(Long id : listLike) {
+                for (Long id : listLike) {
                     listFilm.add(findFilmById(id));
                 }
             }
         return listFilm;
-
-
-
-/*
-        return inMemoryFilmStorage.getFilms().stream()
-                .sorted((Film film1, Film film2) -> {
-                        if (film1.getLikes().size() > film2.getLikes().size()) return -1;
-                        if (film1.getLikes().size() < film2.getLikes().size()) return 1;
-                        return 0;
-                })
-                .limit(count)
-                .collect(Collectors.toList());
-
- */
 
     }
 

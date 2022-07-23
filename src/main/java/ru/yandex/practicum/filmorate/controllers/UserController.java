@@ -17,15 +17,11 @@ import java.util.*;
 @Slf4j
 public class UserController {
 
-    private final UserStorage inMemoryUserStorage;
+
     private final UserService userService;
 
     @Autowired
-    public UserController(
-            @Qualifier("UserDbStorage")
-            UserStorage inMemoryUserStorage,
-            UserService userService) {
-        this.inMemoryUserStorage = inMemoryUserStorage;
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -90,7 +86,7 @@ public class UserController {
 
     //Удаление пользователя по id
     @DeleteMapping("/users/{id}")
-    public User deleteUser(@PathVariable Long id){
+    public User deleteUser(@PathVariable Long id) {
         log.info("DELETE-запрос на удаление пользователя по id.");
         if (id == null) throw new NullPointerException("Id = null");
         return userService.delete(id);
