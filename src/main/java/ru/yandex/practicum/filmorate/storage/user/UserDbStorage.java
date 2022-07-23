@@ -32,7 +32,7 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
-    public User add(User user) {
+    public Long add(User user) {
         String sqlQuery = "insert into USERS (USER_NAME, LOGIN, EMAIL, BIRTHDAY) values (?, ?, ?, ?)";
         //jdbcTemplate.update(sqlQuery, user.getName(), user.getLogin(), user.getEmail(), user.getBirthday().toString());
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -48,39 +48,39 @@ public class UserDbStorage implements UserStorage {
                 },
                 keyHolder);
 
-        return getUser(keyHolder.getKey().longValue());
+        return (keyHolder.getKey().longValue());
     }
 
     @Override
-    public User delete(Long id) {
-        User user = getUser(id);
+    public boolean delete(Long id) {
         String sqlQuery = "delete from USERS where USER_ID=?";
-        if(jdbcTemplate.update(sqlQuery, id) > 0) return user;
-        return null;
+        if(jdbcTemplate.update(sqlQuery, id) > 0) return true;
+        return false;
     }
 
     @Override
-    public User update(User user) {
+    public boolean update(User user) {
         String sqlQuery = "update USERS set USER_NAME=?, LOGIN=?, EMAIL=?, BIRTHDAY=? where USER_ID=?";
-        jdbcTemplate.update(sqlQuery, user.getName(), user.getLogin(), user.getEmail(), user.getBirthday().toString(),
-                user.getId());
-
-        return getUser(user.getId());
+        if (jdbcTemplate.update(
+                sqlQuery,
+                user.getName(),
+                user.getLogin(),
+                user.getEmail(),
+                user.getBirthday().toString(),
+                user.getId()
+        ) > 0) return true;
+        else return false;
     }
+
 
     @Override
-    public Collection<User> getList() {
-        return null;
-    }
-
-
     public Optional<User> findUserByID(Long id) {
         String sql = "select * from USERS where USER_ID=?";
         SqlRowSet userRows = jdbcTemplate.queryForRowSet(sql, id);
         if(userRows.next()) {
             User user = User.builder()
                     .id(userRows.getLong("USER_ID"))
-                    .name(userRows.getString("NAME"))
+                    .name(userRows.getString("USER_NAME"))
                     .login(userRows.getString("LOGIN"))
                     .email(userRows.getString("EMAIL"))
                     .birthday(userRows.getDate("BIRTHDAY").toLocalDate())
@@ -88,6 +88,13 @@ public class UserDbStorage implements UserStorage {
             return Optional.of(user);
         }
         return Optional.empty();
+    }
+
+    //Список пользователей
+    @Override
+    public Collection<User> getList() {
+        String sqlQuery = "select * from USERS ORDER BY USER_ID";
+        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeUser(rs));
     }
 
     @Override

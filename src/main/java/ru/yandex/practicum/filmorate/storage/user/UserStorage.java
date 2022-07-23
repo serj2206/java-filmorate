@@ -8,13 +8,13 @@ import java.util.Optional;
 
 public interface UserStorage {
     //Добавление пользователя
-    public User add(User user);
+    public Long add(User user);
 
     //Удаление пользователя
-    public User delete(Long id);
+    public boolean delete(Long id);
 
     //Обновление пользователя
-    public User update(User user);
+    public boolean update(User user);
 
     //Выгрузка списка пользователей
     public Collection<User> getList();

@@ -25,6 +25,37 @@ public class ErrorHandler {
         return new ErrorResponse("ID не обнаружен ", e.getMessage());
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleUserNotUpdatedException(final UserNotUpdatedException e) {
+        return new ErrorResponse("Ошибка обновления ", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleUserNotDeleteException(final UserNotDeleteException e) {
+        return new ErrorResponse("Ошибка удаления ", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleReplayFriendShipException(final ReplayFriendShipException e) {
+        return new ErrorResponse("Ошибка добавления в друзья ", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleFriendShipNotDeleteException(final FriendShipNotDeleteException e) {
+        return new ErrorResponse("Ошибка удаления из друзей ", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleFilmNotUpdatedException(final FilmNotUpdatedException e) {
+        return new ErrorResponse("Ошибка обновления ", e.getMessage());
+    }
+
+
 
 
 }

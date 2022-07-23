@@ -17,28 +17,28 @@ create table FILMS
     FILM_ID          INTEGER auto_increment
         primary key,
     FILM_NAME        CHARACTER VARYING(200) not null,
-    FILM_DESCRIPTION CHARACTER VARYING,
-    RELEASE_DATA     DATE                   not null,
+    FILM_DESCRIPTION CHARACTER VARYING(200) not null,
+    RELEASE_DATA     DATE not null,
     DURATION         INTEGER,
     MPA_ID      CHARACTER VARYING
         references MPA (MPA_ID),
-    check ("DURATION" > 0)
+    check ("DURATION" > 0),
+    constraint film_unique unique (FILM_NAME,  RELEASE_DATA)
 );
 
 create table FILM_GENRES
 (
     FILM_ID  INTEGER not null
-        references FILMS,
+        references FILMS(FILM_ID),
     GENRE_ID INTEGER not null
-        references GENRES,
+        references GENRES(GENRE_ID),
     constraint FILM_GENRE_PK
         primary key (FILM_ID, GENRE_ID)
 );
 
 create table STATUS_FRIENDSHIPS
 (
-    STATUS_ID          INTEGER               not null
-        primary key,
+    STATUS_ID INTEGER not null primary key,
     STATUS_DESCRIPTION CHARACTER VARYING(20) not null
 );
 
@@ -58,14 +58,14 @@ create table USERS
 
 create table FRIENDSHIPS
 (
-    USER_GIVE INTEGER not null
-        references USERS,
-    USER_TAKE INTEGER not null
-        references USERS,
+    USER_ID INTEGER not null
+        references USERS (USER_ID),
+    FRIEND_ID INTEGER not null
+        references USERS (USER_ID),
     STATUS_ID INTEGER
         references STATUS_FRIENDSHIPS,
     constraint USER_GIVE_TAKE_PK
-        primary key (USER_GIVE, USER_TAKE)
+        primary key (USER_ID, FRIEND_ID)
 );
 
 create table LIKES
