@@ -48,7 +48,6 @@ public class FriendShipDaoImpl implements FriendShipDao {
         log.info("  FriendShipDaoImpl.getList(userId = {})", userId);
         String sqlQuery = "select FRIEND_ID from FRIENDSHIPS where USER_ID = ? order by FRIEND_ID ";
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeLong(rs), userId);
-
     }
 
     //Список общих друзей
@@ -69,6 +68,6 @@ public class FriendShipDaoImpl implements FriendShipDao {
     public boolean delete(Long id, Long friendId){
         log.info("  FriendShipDaoImpl.delete(id = {}, friendId = {})", id, friendId);
         String sqlQuery = "delete from FRIENDSHIPS where USER_ID =? AND FRIEND_ID = ?";
-        return jdbcTemplate.update(sqlQuery, id, friendId) > 0;
+        return jdbcTemplate.update(sqlQuery, id, friendId) == 1;
     }
 }

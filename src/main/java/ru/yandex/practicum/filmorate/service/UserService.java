@@ -19,7 +19,7 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private final UserStorage inMemoryUserStorage;
+    private final UserStorage userDbStorage;
     private final ValidationControl validationControl;
 
     private final FriendShipDao friendShipDao;
@@ -30,7 +30,7 @@ public class UserService {
             @Qualifier("UserDbStorage") UserStorage inMemoryUserStorage,
             ValidationControl validationControl,
             FriendShipDao friendShipDao) {
-        this.inMemoryUserStorage = inMemoryUserStorage;
+        this.userDbStorage = inMemoryUserStorage;
         this.validationControl = validationControl;
         this.friendShipDao = friendShipDao;
     }
@@ -39,13 +39,13 @@ public class UserService {
     public User addUser(User user) {
         log.info(" UserService.addUser()");
         validationControl.createValidationUser(user);
-        return findUserById(inMemoryUserStorage.add(user));
+        return findUserById(userDbStorage.add(user));
     }
 
     //Предоставить пользователя по Id
     public User findUserById(Long id) {
         log.info(" UserService.findUserById(id = {})", id);
-        Optional<User> userOptional = inMemoryUserStorage.findUserByID(id);
+        Optional<User> userOptional = userDbStorage.findUserById(id);
         if (userOptional.isPresent())
             return userOptional.get();
         else throw new UserNotDetectedException(String.format("Пользователь c id= %s не обнаружен", id));
@@ -55,7 +55,7 @@ public class UserService {
     public User update(User user) {
         log.info(" UserService.update()");
         validationControl.createValidationUser(user);
-        if (inMemoryUserStorage.update(user)) {
+        if (userDbStorage.update(user)) {
             return findUserById(user.getId());
         }
         throw new UserNotUpdatedException(String.format("Ошибка обновления данных пользователя c id= %s", user.getId()));
@@ -64,14 +64,14 @@ public class UserService {
     //Получение списка все пользователей
     public Collection<User> getList() {
         log.info(" UserService.getList()");
-        return inMemoryUserStorage.getList();
+        return userDbStorage.getList();
     }
 
     //Удаление пользователя
     public User delete(Long id) {
         log.info(" UserService.delete(id = {})", id);
         User user = findUserById(id);
-        if (inMemoryUserStorage.delete(id)) return user;
+        if (userDbStorage.delete(id)) return user;
         else throw new UserNotDeleteException(String.format("Ошибка удаления пользователя c id= %s", user.getId()));
     }
 

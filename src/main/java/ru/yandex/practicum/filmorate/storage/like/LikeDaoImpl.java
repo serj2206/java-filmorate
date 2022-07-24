@@ -19,7 +19,7 @@ public class LikeDaoImpl implements LikeDao {
 
     //Добавить Like
     @Override
-    public boolean add(Long filmId, Long userId){
+    public boolean add(Long filmId, Long userId) {
         log.info("  LikeDaoImpl.add(filmId = {}, userId = {})", filmId, userId);
         String sqlQuery = "insert into LIKES (FILM_ID, USER_ID) values (?, ?)";
         if(jdbcTemplate.update(sqlQuery, filmId, userId) > 0) return true;
@@ -31,7 +31,7 @@ public class LikeDaoImpl implements LikeDao {
     public boolean delete(Long filmId, Long userId) {
         log.info("  LikeDaoImpl.delete(filmId = {}, userId = {})", filmId, userId);
         String sqlQuery = "delete from LIKES where FILM_ID = ? AND USER_ID = ?";
-        if (jdbcTemplate.update(sqlQuery, filmId, userId) > 0) return true;
+        if (jdbcTemplate.update(sqlQuery, filmId, userId) == 1) return true;
         return false;
     }
 

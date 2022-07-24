@@ -19,13 +19,14 @@ public class MpaDaoImpl implements MpaDao {
     public MpaDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
+/*
     //Добавить рейтинг
     @Override
     public Integer add(Mpa mpa) {
 
         return null;
     }
+*/
 
     //Предоставить список рейтингов возрастных ограничений
     @Override

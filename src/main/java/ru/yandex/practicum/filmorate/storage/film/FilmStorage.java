@@ -13,7 +13,7 @@ public interface FilmStorage {
     public Long add(Film film);
 
     //Удалить фильм из библиотеки
-    public Film delete(Long id);
+    public boolean delete(Long id);
 
     //Обновить фильм в библиотеке
     public boolean update(Film film);

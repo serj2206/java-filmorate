@@ -28,10 +28,10 @@ public class FilmGenreDaoImpl implements FilmGenreDao {
 
     //Добавление
     @Override
-    public void add(Film film, Long filmId) {
+    public void add(Set<Genre> genres, Long filmId) {
         log.info("  FilmGenreDaoImpl.add()");
         String sqlQuery = "insert into FILM_GENRES (FILM_ID, GENRE_ID) values (?, ?)";
-        HashSet<Genre> genres = film.getGenres();
+
         if (genres != null && !genres.isEmpty()) {
             for (Genre genre : genres) {
                 jdbcTemplate.update(sqlQuery, filmId, genre.getId());
@@ -45,17 +45,21 @@ public class FilmGenreDaoImpl implements FilmGenreDao {
         log.info("  FilmGenreDaoImpl.update()");
         String sqlQuery = "delete from FILM_GENRES where FILM_ID = ?";
         jdbcTemplate.update(sqlQuery, film.getId());
-        add(film, film.getId());
+        add(film.getGenres(), film.getId());
     }
+
+
+
+
 
     //Выгрузка списка жанров принадлежащих фильму
     @Override
-    public Collection<Genre> getFilmGenre(Film film) {
-        log.info("  FilmGenreDaoImpl.getFilmGenre()");
+    public Collection<Genre> getFilmGenre(Long filmId) {
+        log.info("  FilmGenreDaoImpl.getFilmGenre(filmId = {})", filmId);
 
         String sqlQuery = "select GENRE_ID from FILM_GENRES where FILM_ID = ?";
 
-        List<Genre> list = jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeGenre(rs), film.getId());
+        List<Genre> list = jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeGenre(rs), filmId);
 
         return list;
     }

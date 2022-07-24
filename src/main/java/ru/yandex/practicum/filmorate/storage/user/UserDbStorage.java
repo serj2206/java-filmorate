@@ -79,7 +79,7 @@ public class UserDbStorage implements UserStorage {
 
 
     @Override
-    public Optional<User> findUserByID(Long id) {
+    public Optional<User> findUserById(Long id) {
         log.info("  UserDbStorage.findUserByID(id = {})", id);
         String sql = "select * from USERS where USER_ID=?";
         SqlRowSet userRows = jdbcTemplate.queryForRowSet(sql, id);

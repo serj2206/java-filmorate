@@ -8,7 +8,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.storage.filmgenre.FilmGenreDao;
 
@@ -16,7 +15,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
 
 @Slf4j
@@ -82,9 +80,11 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public Film delete(Long id) {
+    public boolean delete(Long id) {
         log.info("  FilmDbStorage.delete(id = {})", id);
-        return null;
+        String sqlQuery = "delete from FILMS where FILM_ID = ?";
+        if (jdbcTemplate.update(sqlQuery, id) == 1) return true;
+        return false;
     }
 
     @Override

@@ -22,5 +22,5 @@ public interface UserStorage {
     //Выгрузка пользователя по id
     public User getUser(Long id);
 
-    Optional<User> findUserByID(Long id);
+    Optional<User> findUserById(Long id);
 }

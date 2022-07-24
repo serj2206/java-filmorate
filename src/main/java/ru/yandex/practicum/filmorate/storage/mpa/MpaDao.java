@@ -8,7 +8,7 @@ import java.util.Optional;
 
 
 public interface MpaDao {
-    public Integer add(Mpa mpa);
+    //public Integer add(Mpa mpa);
 
     //Предоставить список рейтингов возрастных ограничений
     Collection<Mpa> getList();

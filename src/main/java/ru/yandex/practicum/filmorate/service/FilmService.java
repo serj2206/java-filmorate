@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 @Service
 public class FilmService {
     private final FilmStorage inMemoryFilmStorage;
-    private final UserService userService;
 
     private final ValidationControl validationControl;
 
@@ -34,12 +33,10 @@ public class FilmService {
 
     @Autowired
     public FilmService(@Qualifier("FilmDbStorage") FilmStorage inMemoryFilmStorage
-            , UserService userService
             , ValidationControl validationControl
             , FilmGenreDao filmGenreDao
             , LikeDao likeDao) {
         this.inMemoryFilmStorage = inMemoryFilmStorage;
-        this.userService = userService;
         this.validationControl = validationControl;
         this.filmGenreDao = filmGenreDao;
         this.likeDao = likeDao;
@@ -51,7 +48,7 @@ public class FilmService {
         Optional<Film> optionalFilm = inMemoryFilmStorage.findFilmById(id);
         if (optionalFilm.isPresent()) {
             Film film = optionalFilm.get();
-            film.setGenres(new HashSet<>(filmGenreDao.getFilmGenre(film)));
+            film.setGenres(new HashSet<>(filmGenreDao.getFilmGenre(film.getId())));
             return film;
         } else throw new FilmNotDetectedException(String.format("Фильм c id= %s не обнаружен", id));
     }
@@ -61,7 +58,7 @@ public class FilmService {
         log.info(" FilmService.add()");
         validationControl.createValidationFilm(film);
         Long id = inMemoryFilmStorage.add(film);
-        filmGenreDao.add(film, id);
+        filmGenreDao.add(film.getGenres(), id);
         return findFilmById(id);
     }
 
