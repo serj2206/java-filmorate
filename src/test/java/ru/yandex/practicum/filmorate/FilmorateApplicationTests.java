@@ -45,7 +45,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(1)
 	public void testAddUser(){
-		log.info("Test 1");
+		log.debug("Test 1");
 		User userTest = User.builder()
 				.email("email@yandex.ru")
 				.name("Petr")
@@ -60,7 +60,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(2)
 	public void testFindUserById() {
-		log.info("Test 2");
+		log.debug("Test 2");
 		Optional<User> userOptional = userStorage.findUserById(1L);
 
 		assertThat(userOptional)
@@ -77,7 +77,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(3)
 	public void testUpdateUser() {
-		log.info("Test 3");
+		log.debug("Test 3");
 		User userTest = User.builder()
 				.id(1L)
 				.email("update@yandex.ru")
@@ -102,7 +102,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(4)
 	public void testDeleteUser() {
-		log.info("Test 4");
+		log.debug("Test 4");
 		assertTrue(userStorage.delete(1L));
 
 	}
@@ -111,7 +111,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(5)
 	public void testAddFilm() {;
-		log.info("Test 5");
+		log.debug("Test 5");
 		Mpa mpa1 = new Mpa();
 		mpa1.setId(1);
 		Film filmTest = Film.builder()
@@ -127,7 +127,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(6)
 	public void testFindFilmById() {
-		log.info("Test 6");
+		log.debug("Test 6");
 		Optional<Film> filmOptional = filmStorage.findFilmById(1L);
 		assertThat(filmOptional)
 				.isPresent()
@@ -144,7 +144,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(7)
 	public void testUpdateFilm() {
-		log.info("Test 7");
+		log.debug("Test 7");
 		Mpa mpa1 = new Mpa();
 		mpa1.setId(2);
 		Film filmTest = Film.builder()
@@ -173,7 +173,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(8)
 	public void testAddFilmGenre() {
-		log.info("Test 8");
+		log.debug("Test 8");
 		Long filmId = 1L;
 
 		Genre genre1 = new Genre(1, "Комедия");
@@ -193,7 +193,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(9)
 	public void testDeleteFilm() {
-		log.info("Test 9");
+		log.debug("Test 9");
 		Long filmId = 1L;
 
 		assertTrue(filmStorage.delete(filmId));
@@ -205,7 +205,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(10)
 	public void testfindMpaById() {
-		log.info("Test 10");
+		log.debug("Test 10");
 		Optional<Mpa> optionalMpa = mpaDao.findMpaById(1);
 		assertThat(optionalMpa)
 				.isPresent()
@@ -218,7 +218,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(11)
 	public void testGetListMpa() {
-		log.info("Test 11");
+		log.debug("Test 11");
 		List<Mpa> mpaList = new ArrayList<>(mpaDao.getList());
 		assertTrue(mpaList.size() == 5);
 		assertTrue(mpaList.contains(new Mpa(1, "G")));
@@ -232,7 +232,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(12)
 	public void testFindGenreById() {
-		log.info("Test 12");
+		log.debug("Test 12");
 		Optional<Genre> optionalGenre = genreDao.findGenreById(1);
 		assertThat(optionalGenre)
 				.isPresent()
@@ -247,7 +247,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(13)
 	public void testgetListGenre() {
-		log.info("Test 13");
+		log.debug("Test 13");
 		List<Genre> genreList = new ArrayList<>(genreDao.getList());
 		assertTrue(genreList.size() == 6);
 		assertTrue(genreList.contains(new Genre(1, "Комедия")));
@@ -263,7 +263,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(14)
 	public void testAddLike() {
-		log.info("Test 14");
+		log.debug("Test 14");
 		User user1 = User.builder()
 				.email("email@yandex.ru")
 				.name("Petr")
@@ -289,7 +289,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(15)
 	public void testGetTop() {
-		log.info("Test 15");
+		log.debug("Test 15");
 		Long userId1 = 2L;
 		Long filmId1 =2L;
 		User user2 = User.builder()
@@ -344,7 +344,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(16)
 	public void testDeleteLike() {
-		log.info("Test 16");
+		log.debug("Test 16");
 		assertTrue(likeDao.delete(2L,2L));
 	}
 
@@ -352,14 +352,14 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(17)
 	public void testAddFriend() {
-		log.info("Test 17");
+		log.debug("Test 17");
 		assertTrue(friendShipDao.add(2L,3L));
 	}
 
 	@Test
 	@Order(18)
 	public void testGetListFriend() {
-		log.info("Test 18");
+		log.debug("Test 18");
 		friendShipDao.add(2L,4L);
 		List<Long> list = new ArrayList<>(friendShipDao.getList(2L));
 		assertTrue(list.size() == 2);
@@ -370,7 +370,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(19)
 	public void testGetCommonFriendList() {
-		log.info("Test 19");
+		log.debug("Test 19");
 		friendShipDao.add(3L,2L);
 		friendShipDao.add(3L, 4L);
 		friendShipDao.add(4L, 2L);
@@ -382,7 +382,7 @@ class FilmorateApplicationTests {
 	@Test
 	@Order(20)
 	public void testDeleteFriend() {
-		log.info("Test 20");
+		log.debug("Test 20");
 		assertTrue(friendShipDao.delete(2L, 3L));
 	}
 

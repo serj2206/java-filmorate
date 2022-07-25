@@ -45,9 +45,7 @@ public class UserController {
                           @PathVariable Long friendId) {
         log.info("PUT-запрос на добавления в друзья");
         if (id == null) throw new NullPointerException("id = null");
-        //if (id < 0 ) throw new ValidationException("id < 0");
         if (friendId == null) throw new NullPointerException("friendId = null");
-        //if (friendId < 0 ) throw new ValidationException("friendId < 0");
         userService.addFriend(id, friendId);
     }
 

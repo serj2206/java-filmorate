@@ -7,17 +7,12 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.controllers.ValidationControl;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotDetectedException;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotUpdatedException;
-import ru.yandex.practicum.filmorate.exceptions.UserNotDetectedException;
-import ru.yandex.practicum.filmorate.exceptions.UserNotUpdatedException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.filmgenre.FilmGenreDao;
 import ru.yandex.practicum.filmorate.storage.like.LikeDao;
-import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -44,7 +39,7 @@ public class FilmService {
 
     //Вернуть фильм по id
     public Film findFilmById(Long id) {
-        log.info(" FilmServis.findFilmById(id = {})", id);
+        log.debug(" FilmServis.findFilmById(id = {})", id);
         Optional<Film> optionalFilm = inMemoryFilmStorage.findFilmById(id);
         if (optionalFilm.isPresent()) {
             Film film = optionalFilm.get();
@@ -55,7 +50,7 @@ public class FilmService {
 
     //Добавить фильм
     public Film add(Film film) {
-        log.info(" FilmService.add()");
+        log.debug(" FilmService.add()");
         validationControl.createValidationFilm(film);
         Long id = inMemoryFilmStorage.add(film);
         filmGenreDao.add(film.getGenres(), id);
@@ -64,7 +59,7 @@ public class FilmService {
 
     //Обновить фильм
     public Film update(Film film) {
-        log.info(" FilmService.update()");
+        log.debug(" FilmService.update()");
         validationControl.createValidationFilm(film);
         if (inMemoryFilmStorage.update(film)) {
             filmGenreDao.update(film);
@@ -75,13 +70,13 @@ public class FilmService {
 
     //Список фильмов
     public Collection<Film> getFilms() {
-        log.info(" FilmService.update()");
+        log.debug(" FilmService.update()");
         return inMemoryFilmStorage.getFilms();
     }
 
     //Предоставление списка состоящего из числа count наиболее популярных фильмов по количеству лайков
     public List<Film> getTop(int count) {
-        log.info(" FilmService.getTop(count = {})", count);
+        log.debug(" FilmService.getTop(count = {})", count);
         List<Film> listFilm = new ArrayList<>();
         List<Long> listLike = new ArrayList<>(likeDao.getTop(count));
         if (listLike != null)
@@ -91,7 +86,5 @@ public class FilmService {
                 }
             }
         return listFilm;
-
     }
-
 }

@@ -25,7 +25,7 @@ public class GenreDaoImpl implements GenreDao {
     //Поиск жанра по ID
     @Override
     public Optional<Genre> findGenreById(Integer id){
-        log.info("  GenreDaoImpl.findGenreById(id = {})", id);
+        log.debug("  GenreDaoImpl.findGenreById(id = {})", id);
         String sqlQuery = "select * from GENRES where GENRE_ID = ?";
         SqlRowSet genreRows = jdbcTemplate.queryForRowSet(sqlQuery, id);
         if(genreRows.next()) {
@@ -40,7 +40,7 @@ public class GenreDaoImpl implements GenreDao {
     //Список жанров
     @Override
     public Collection<Genre> getList() {
-        log.info("  GenreDaoImpl.getList()");
+        log.debug("  GenreDaoImpl.getList()");
         String sqlQuery = "select * from GENRES";
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeGenre(rs));
     }
@@ -50,7 +50,5 @@ public class GenreDaoImpl implements GenreDao {
         genre.setId(rs.getInt("GENRE_ID"));
         genre.setName(rs.getString("GENRE_NAME"));
         return genre;
-
     }
-
 }

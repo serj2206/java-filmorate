@@ -19,19 +19,11 @@ public class MpaDaoImpl implements MpaDao {
     public MpaDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-/*
-    //Добавить рейтинг
-    @Override
-    public Integer add(Mpa mpa) {
-
-        return null;
-    }
-*/
 
     //Предоставить список рейтингов возрастных ограничений
     @Override
     public Collection<Mpa> getList() {
-        log.info("  MpaDaoImpl.getList()");
+        log.debug("  MpaDaoImpl.getList()");
         String sqlQuery = "select * from MPA";
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeMpa(rs));
     }
@@ -46,7 +38,7 @@ public class MpaDaoImpl implements MpaDao {
     //Предоставить данные Mpa по ID
     @Override
     public Optional<Mpa> findMpaById(Integer id) {
-        log.info("  MpaDaoImpl.findMpaById(id = {})", id);
+        log.debug("  MpaDaoImpl.findMpaById(id = {})", id);
         String sqlQuery = "select * from MPA where MPA_ID = ?";
         SqlRowSet mpaRows = jdbcTemplate.queryForRowSet(sqlQuery, id);
         if (mpaRows.next()) {
@@ -57,6 +49,4 @@ public class MpaDaoImpl implements MpaDao {
         }
         return Optional.empty();
     }
-
-
 }

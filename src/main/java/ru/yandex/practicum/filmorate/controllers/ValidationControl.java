@@ -39,17 +39,6 @@ public class ValidationControl {
         return user;
     }
 
-    public User updateValidationUser (User user, Map<Long, User> listUser) {
-        createValidationUser(user);
-
-        if (!listUser.containsKey(user.getId())) {
-            throw new UserNotDetectedException("ID пользователя не найдено!");
-        }
-
-        log.info("ID пользователя {}.", user.getId());
-        return user;
-    }
-
     public Film createValidationFilm (Film film) {
         if (film == null) {
             throw new ValidationException("Тело запроса отсутствует!");
@@ -71,19 +60,4 @@ public class ValidationControl {
 
         return film;
     }
-
-    public Film updateValidationFilm (Film film, Map<Long, Film> collectionFilms) {
-        createValidationFilm(film);
-
-        if (!collectionFilms.containsKey(film.getId())) {
-            throw new FilmNotDetectedException("ID фильма не найдено!");
-        }
-        return film;
-    }
-
-
-
-
-
-
 }

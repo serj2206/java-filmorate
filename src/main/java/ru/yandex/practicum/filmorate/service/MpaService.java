@@ -22,12 +22,12 @@ public class MpaService {
 
     //Предоставить список рейтингов возрастных ограничений
     public Collection<Mpa> getMpaList() {
-        log.info(" MpaService.getMpaList()");
+        log.debug(" MpaService.getMpaList()");
         return mpaDao.getList();
     }
     //Предоставить рейтинг по id
     public Mpa findMpaById(Integer id) {
-        log.info(" MpaService.findMpaById(id = {})", id);
+        log.debug(" MpaService.findMpaById(id = {})", id);
         Optional<Mpa> optionalMpa = mpaDao.findMpaById(id);
         if (optionalMpa.isPresent()) {
             return optionalMpa.get();

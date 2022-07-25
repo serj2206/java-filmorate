@@ -21,11 +21,11 @@ public class FriendShipDaoImpl implements FriendShipDao {
     //Найти друзей
     @Override
     public boolean findFriend(Long userId, Long friendId) {
-        log.info("  FriendShipDaoImpl.findFriend(userId = {}, friendId = {})", userId, friendId);
+        log.debug("  FriendShipDaoImpl.findFriend(userId = {}, friendId = {})", userId, friendId);
         String sqlQuery = "select USER_ID, FRIEND_ID from FRIENDSHIPS where USER_ID = ? and FRIEND_ID = ?";
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sqlQuery, userId, friendId);
         if (sqlRowSet.next()) {
-            log.info("Связка пользователь c id = {} и друг c id = {} найдены", sqlRowSet.getLong("USER_ID"),
+            log.debug("Связка пользователь c id = {} и друг c id = {} найдены", sqlRowSet.getLong("USER_ID"),
                     sqlRowSet.getLong("FRIEND_ID"));
             return true;
         }
@@ -35,7 +35,7 @@ public class FriendShipDaoImpl implements FriendShipDao {
     //Добавить друга
     @Override
     public boolean add(Long userId, Long friendId) {
-        log.info("  FriendShipDaoImpl.add(userId = {}, friendId = {})", userId, friendId);
+        log.debug("  FriendShipDaoImpl.add(userId = {}, friendId = {})", userId, friendId);
         String sqlQuery = "insert into FRIENDSHIPS (USER_ID, FRIEND_ID, STATUS_ID) " +
                 "VALUES (?, ?, ?)";
         if (jdbcTemplate.update(sqlQuery, userId, friendId, 1) > 0) return true;
@@ -45,7 +45,7 @@ public class FriendShipDaoImpl implements FriendShipDao {
     //Список друзей
     @Override
     public Collection<Long> getList(Long userId) {
-        log.info("  FriendShipDaoImpl.getList(userId = {})", userId);
+        log.debug("  FriendShipDaoImpl.getList(userId = {})", userId);
         String sqlQuery = "select FRIEND_ID from FRIENDSHIPS where USER_ID = ? order by FRIEND_ID ";
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeLong(rs), userId);
     }
@@ -53,7 +53,7 @@ public class FriendShipDaoImpl implements FriendShipDao {
     //Список общих друзей
     @Override
     public Collection<Long> getCommonFriends(Long id, Long otherId) {
-        log.info("  FriendShipDaoImpl.getCommonFriends(id = {}, otherId = {})", id, otherId);
+        log.debug("  FriendShipDaoImpl.getCommonFriends(id = {}, otherId = {})", id, otherId);
         String sqlQuery = "select DISTINCT FRIEND_ID from FRIENDSHIPS where USER_ID = ? OR USER_ID = ? GROUP BY FRIEND_ID " +
                 "HAVING FRIEND_ID != ? AND FRIEND_ID != ?";
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeLong(rs), id, otherId, id, otherId);
@@ -66,7 +66,7 @@ public class FriendShipDaoImpl implements FriendShipDao {
     //Удалить друга
     @Override
     public boolean delete(Long id, Long friendId){
-        log.info("  FriendShipDaoImpl.delete(id = {}, friendId = {})", id, friendId);
+        log.debug("  FriendShipDaoImpl.delete(id = {}, friendId = {})", id, friendId);
         String sqlQuery = "delete from FRIENDSHIPS where USER_ID =? AND FRIEND_ID = ?";
         return jdbcTemplate.update(sqlQuery, id, friendId) == 1;
     }

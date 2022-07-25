@@ -32,7 +32,7 @@ public class FilmDbStorage implements FilmStorage {
     //Вернуть фильм по id
     @Override
     public Optional<Film> findFilmById(Long id) {
-        log.info("  FilmDbStorage.findFilmById(id = {})", id);
+        log.debug("  FilmDbStorage.findFilmById(id = {})", id);
         Film film;
         Mpa mpa = new Mpa();
         String sqlQuery = "select * from FILMS where FILM_ID = ?";
@@ -55,12 +55,11 @@ public class FilmDbStorage implements FilmStorage {
             return Optional.of(film);
         }
         return Optional.empty();
-
     }
 
     @Override
     public Long add(Film film) {
-        log.info("  FilmDbStorage.add()");
+        log.debug("  FilmDbStorage.add()");
         String sqlQuery = "insert into Films (FILM_NAME, FILM_DESCRIPTION, DURATION, RELEASE_DATA, MPA_ID)" +
                 "values (?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -81,7 +80,7 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public boolean delete(Long id) {
-        log.info("  FilmDbStorage.delete(id = {})", id);
+        log.debug("  FilmDbStorage.delete(id = {})", id);
         String sqlQuery = "delete from FILMS where FILM_ID = ?";
         if (jdbcTemplate.update(sqlQuery, id) == 1) return true;
         return false;
@@ -89,7 +88,7 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public boolean update(Film film) {
-        log.info("  FilmDbStorage.update()");
+        log.debug("  FilmDbStorage.update()");
         String sqlQuery = "update FILMS set FILM_NAME = ?, FILM_DESCRIPTION = ?, RELEASE_DATA  = ?, DURATION = ?," +
                 "MPA_ID = ? where FILM_ID = ?";
         if (jdbcTemplate.update(sqlQuery,
@@ -104,7 +103,7 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Collection<Film> getFilms() {
-        log.info("  FilmDbStorage.getFilms()");
+        log.debug("  FilmDbStorage.getFilms()");
         String sqlQuery = "select * from FILMS";
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs));
     }
